@@ -18,3 +18,6 @@ mwup:
 mwup-bin: mwup
 	make -C mwup
 	ln -s mwup/mwup ./mwup-bin
+
+clean:
+	rm -r mwup
