@@ -52,7 +52,7 @@ probdir=sets/$probset
 mkdir -p results
 expdir=results/$(expdir-name $probdir)
 
-find $probdir -name "*.pddl" | while read src ; do
+find $probdir -name "*.pddl" -or -name "*.macro.*" | while read src ; do
     dest=$expdir${src##$probdir}
     mkdir -p $(dirname $dest)
     ln -s ../../../$src $dest
