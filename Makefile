@@ -14,5 +14,5 @@ aflab-303cluster:
 
 mwup:
 	git clone "git@github.com:guicho271828/mwup.git"
-	make -C mwup
-	ln -s mwup/mwup
+	$(MAKE) -C mwup
+	ln -s mwup/mwup ./mwup
