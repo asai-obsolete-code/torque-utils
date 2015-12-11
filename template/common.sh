@@ -20,7 +20,7 @@ export iter="--iterated"
 export macrocost="--add-macro-cost"
 export plain="--plain"
 
-export base="mwup-bin --dynamic-space-size 2000 -t 3600 -m 2000000 -v"
+export base="mwup-bin -t 3600 -m 2000000 -v"
 export nocost="--remove-cost"
 
 # planners
