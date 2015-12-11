@@ -1,6 +1,0 @@
-#!/bin/bash
-
-for d in $(ls -d results/zrandom*/*/ | grep -v "^.*-r/")
-do
-    mv -v ${d%/} ${d%/}-r
-done
