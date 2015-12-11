@@ -1,0 +1,55 @@
+#!/bin/bash
+
+translate (){
+    # $1 : out
+    # Done! [0.140s CPU, 0.130s wall-clock]
+    grep Done! $1 | cut -d' ' -f4 | sed 's/s//g'
+}
+
+domains (){
+    ls answers/
+}
+problems (){
+    find answers/$1/ -name "*.pddl" | grep -v "domain" | xargs -n 1 basename | sort
+}
+outs (){
+    find -path "*/$1/$2*.out"
+}
+
+iterate (){
+    for d in $(domains)
+    do
+        for p in $(problems $d)
+        do
+            $@ $d $p
+        done
+    done
+}
+
+variance (){
+    count=0
+    zerocount=0
+    acc=0
+    acc2=0
+    failures=
+    for out in $(outs $1 $(basename $2 .pddl))
+    do
+        t=$(translate $out)
+        acc=$(clisp -q -x "(+ $t $acc)")
+        acc2=$(clisp -q -x "(+ (* $t $t) $acc2)")
+        if [ -z $t ]
+        then
+            zerocount=$(($zerocount+1))
+            failures="$failures $(basename $out | cut -d. -f2-3)"
+        else
+            count=$(($count+1))
+        fi
+    done
+    mean=$(clisp -q -x "(/ $acc $count)")
+    var=$(clisp -q -x "(sqrt (- (/ $acc2 $count) (* $mean $mean)))")
+    echo "$1 $2 [translation finished: $count instances, mu=$mean sd=$var] [not finished: n=$zerocount] failed conf: $failures conf: $(outs $1 $(basename $2 .pddl) | xargs -n 1 basename | cut -d. -f2-3 | tr '\n' ' ')"
+}
+
+main (){
+    iterate variance
+}

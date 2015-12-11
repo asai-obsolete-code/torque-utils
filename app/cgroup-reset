@@ -1,0 +1,5 @@
+#!/bin/bash
+
+
+$(dirname $(readlink $0))/cgroup-clean $1
+$(dirname $(readlink $0))/cgroup-setup $1

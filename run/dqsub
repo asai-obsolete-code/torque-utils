@@ -1,0 +1,62 @@
+#!/bin/bash
+# -*- mode : sh -*-
+# usage: dqsub [-mMtTPd] -- command
+# doubling-qsub
+
+# echo "$0 $*"
+
+. $WORLD_HOME/run/next.sh
+
+unit_mem=2000000            # 16GB
+mem=250000                   # 250MB
+maxmem=2000000                  # 2GB: *8
+time=225                     # 3.75 min = 30/4
+maxtime=1800                    # 30 min
+debug=false
+cg_cpuacct=
+cg_memory=
+cg_cpu=
+priority=
+queue=
+nodes=1
+# number of nodes to be requested; if nodes>2, processes require LAN communication 
+
+while getopts ":p:n:q:u:g:m:M:t:T:d-" opt
+do
+    case ${opt} in
+        g) cg_cpuacct_parent=${OPTARG}
+            cg_memory_parent=${OPTARG}
+            cg_cpu_parent=${OPTARG} ;;
+        p) priority=${OPTARG} ;;
+        q) queue=${OPTARG} ;;
+        n) nodes=${OPTARG} ;;
+        m) mem=${OPTARG:=$mem} ;;
+        M) maxmem=${OPTARG:=$maxmem} ;;
+        t) time=${OPTARG:=$time} ;;
+        T) maxtime=${OPTARG:=$maxtime} ;;
+        d) debug=true ;;
+        u) unit_mem=${OPTARG:=$unit_mem} ;; 
+        -) break;;
+        \?) OPT_ERROR=1; break;;
+        * ) echo "unsupported option $opt" ;;
+    esac
+done
+
+shift $(($OPTIND - 1))
+
+if [[ -z $1 ]]
+then
+    cat <<EOF
+Usage: 
+       dqsub [-gpPqmMtTd] [--] job.qsub
+EOF
+    exit 1
+fi
+
+command=$(readlink -ef $1)
+outname=$(basename $command .qsub)
+dir=$(dirname $command)
+
+################################################################ 
+
+next

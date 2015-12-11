@@ -1,0 +1,73 @@
+#!/bin/bash
+# -*- mode : sh -*-
+
+val=$WORLD_HOME/CAP/downward/src/validate
+
+target=${1%/}
+shift
+[ -z $target ] && { echo "Usage: optverify targetdir [answerdir] [ignore-behavior] [max-failure]" >&2 ; exit 1 ;}
+
+answer=${1:-$WORLD_HOME/answers}
+answer=${answer%/}
+shift
+
+ignore_behavior=${1:-false}
+shift
+
+i=${1:-100}
+shift
+
+success=0
+failure=0
+skip=0
+
+assert(){
+    eval "$@"
+    case $? in
+        0)
+            # echo "Passed! : $@"
+            success=$(($success+1)) ;;
+        1)
+            echo "Failed! : $@"
+            failure=$(($failure+1)) ;;
+        2)
+            # echo "Skipped! : $@"
+            skip=$(($skip+1)) ;;
+    esac
+    [[ $failure -gt $i ]] && { echo "Too many errors!" >&2 ; exit 1;}
+}
+
+same-behavior(){
+    $ignore_behavior && return 2
+    [ ! -e $2 ] && return 2
+    [ ! -e $1 ] && return 2
+    diff \
+        <(grep "g=" $1 | grep -v "reopen" | cut -d, -f1-3) \
+        <(grep "g=" $2 | grep -v "reopen" | cut -d, -f1-3)
+}
+
+same-cost (){
+    [ ! -e $1 ] && return 2
+    [ ! -e $2 ] && return 2
+    grep "Plan cost:" $1 &>/dev/null || return 2
+    grep "Plan cost:" $2 &>/dev/null || return 2
+    diff <(grep "Plan cost:" $1) <(grep "Plan cost:" $2)
+}
+
+
+for out in $answer/*/*.out
+do
+    probname=$(echo $out | cut -d. -f 1)
+    target_domain=$(dirname $target/${out#$answer/})
+    out2=$target_domain/$(basename $probname).*out
+    assert same-cost $out $out2
+    assert same-behavior $out $out2
+done
+
+cat <<EOF
+Result:
+  Success: $success
+  Failure: $failure
+  Skipped: $skip
+EOF
+

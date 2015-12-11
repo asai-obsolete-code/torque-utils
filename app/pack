@@ -1,0 +1,19 @@
+#!/bin/bash
+# -*- mode:sh -*-
+
+drop=~/Dropbox/component-planner/
+
+greps=$@
+
+for grep in $greps
+do
+    for d in $((ls -d results/* || exit 1) | tee | grep "$grep")
+    do
+        ar="archives/$(basename $d).tar.gz"
+        if [[ ( ! -e $ar ) || ( $d -nt $ar ) ]]
+        then
+            tar czf $ar $d
+        fi
+        cp -uv $ar $drop
+    done
+done

@@ -1,0 +1,18 @@
+#!/bin/bash
+
+. $WORLD_HOME/template/common.sh
+
+resource=$1
+shift
+
+if [[ $resource == "" || $@ == "" ]]
+then
+    cat <<EOF
+Usage: run [resource-varname] [path...]
+resource-varname : $resources (defined in in common.sh)
+            path : directories where the qsub scripts are
+EOF
+    exit 1
+fi
+
+find $@ -path *.qsub | xargs -n 1 dqsub $(ref $resource)

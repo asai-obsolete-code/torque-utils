@@ -1,0 +1,17 @@
+#!/bin/bash
+# -*- mode:sh -*-
+
+# it does not copy teh files to Dropbox
+
+drop=~/Dropbox/component-planner/
+
+grep=${1:-".*"}
+
+for d in $((ls -d results/* || exit 1) | grep $grep)
+do
+    ar="archives/$(basename $d).tar.gz"
+    if [[ ( ! -e $ar ) || ( $d -nt $ar ) ]]
+    then
+        tar czf $ar $d
+    fi
+done

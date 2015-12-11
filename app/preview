@@ -1,0 +1,82 @@
+#!/bin/bash
+
+# create previews
+
+targets=${@:-$WORLD_HOME/output/*.tex}
+name=$(basename $WORLD_HOME)
+
+tables (){
+    for tex in $targets
+    do
+        tex=tables/$name/$(echo $tex | cut -d/ -f2-)
+#         cat <<EOG
+# \begin{table}
+# {\relsize{-3} \centering \input{$tex}}
+# \end{table}
+# EOG
+#         cat <<EOG
+# \begin{table}
+# { \relsize{-1} \centering \input{$tex}}
+# \caption{\url{$tex}}
+# \end{table}
+# \clearpage
+# EOG
+        cat <<EOG
+\begin{center}
+{\relsize{-3}
+ \input{$tex}
+
+\url{$tex}
+}
+\end{center}
+EOG
+    done
+}
+
+
+# \documentclass[9pt,landscape]{article}
+# \usepackage[margin=0mm]{geometry}
+
+( cat <<EOF
+\documentclass[9pt]{article}
+\usepackage{aaai}
+\usepackage{xparse}
+\usepackage{times}
+\usepackage{helvet}
+\usepackage{courier}
+
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{xspace}
+\usepackage{relsize}
+\usepackage{aaai_my}
+\usepackage[dvipdfmx]{graphicx}
+\usepackage{abbrev}
+\usepackage{multirow}
+\usepackage[dvipdfmx]{hyperref}
+\usepackage[margin=0mm]{geometry}
+\frenchspacing
+% \setlength{\pdfpagewidth}{8.5in}
+% \setlength{\pdfpageheight}{11in}
+\setlength{\floatsep}{1mm}
+\setlength{\textfloatsep}{1mm}
+\setlength{\abovecaptionskip}{1mm}
+\setlength{\belowcaptionskip}{1mm}
+\setlength{\abovedisplayskip}{1mm}
+\setlength{\belowdisplayskip}{1mm}
+\setlength{\arraycolsep}{1mm}
+\setlength{\tabcolsep}{0.1em}
+
+\begin{document}
+$(cat $WORLD_HOME/app/toc.tex)
+$(tables)
+\end{document}
+EOF
+) > ~/repos/papers/aaai16/$name.tex
+
+mkdir -p ~/repos/papers/aaai16/tables/$name
+cp -r -t ~/repos/papers/aaai16/tables/$name $WORLD_HOME/output/* 
+cd ~/repos/papers/aaai16
+rm -f $name.ja.pdf
+make $name.ja.pdf
+cp ~/repos/papers/aaai16/$name.pdf ~/Dropbox/FukunagaLabShare/repos/$name-preview.pdf

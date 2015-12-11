@@ -1,0 +1,9 @@
+#!/bin/bash
+
+[ -z $WORLD_HOME ] && { echo "no world" >&2 ; exit 1 ; }
+[ -z "$1" ] && { echo "missing arguments" >&2 ; exit 1 ; }
+
+[[ $2 == "do" ]] && DO="-delete"
+
+find ~/Dropbox/component-planner -regex ".*$1.*" -print $DO
+find $WORLD_HOME/archives/ -regex ".*$1.*" -print $DO

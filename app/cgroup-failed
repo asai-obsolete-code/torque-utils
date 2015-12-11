@@ -1,0 +1,12 @@
+#!/bin/bash
+
+[ -z $1 ] && { echo "Usage: cgroup-failed [finddir]" ; exit 1 ;}
+
+find $1 -name "*err" | while read file
+do
+    if grep "cgroup change of group failed" $file &>/dev/null
+    then
+        qsub=$(echo $file | cut -d. -f1-2).qsub
+        echo $qsub
+    fi
+done

@@ -1,0 +1,9 @@
+#!/bin/bash
+
+find results/ -name "*.out" | grep "ffff" | while read log
+do
+    before=$(wc -l < $log)
+    sed -i -e '/^frontier_size.*/d' $log
+    after=$(wc -l < $log)
+    echo "$before -> $after lines! $log"
+done

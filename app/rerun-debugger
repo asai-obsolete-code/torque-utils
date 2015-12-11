@@ -1,0 +1,5 @@
+#!/bin/bash
+
+. $WORLD_HOME/template/common.sh
+
+sed -e 's/1800.2000000.err/qsub/g' | xargs -n 1 dqsub $(ref ipc)

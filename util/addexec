@@ -1,0 +1,4 @@
+#!/bin/bash
+
+chmod +x $(find -path "*.sh")
+chmod +x $(find -path "*.lisp")

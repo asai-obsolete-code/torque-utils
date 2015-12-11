@@ -1,0 +1,22 @@
+#!/bin/bash
+
+limit=$1
+[ -z $limit ] && { echo "Usage : find-easy-problems timelimit" ; exit 1 ; }
+
+for out in answers/*/*.out
+do
+    time=$(grep "Search time:" $out | cut -d: -f2 | cut -d. -f1)
+    if [[ ! -z $time && $time -lt $limit ]]
+    then
+        echo "$time $out"
+        easy=easy-$limit${out#answers}
+        dir=$(dirname $easy)
+        mkdir -p $dir
+        
+        prob=${out%%.*}.pddl
+        dom=${out%%.*}-domain.pddl
+        [ ! -e $dom ] && dom=$(dirname $out)/domain.pddl
+
+        cp -t $dir $prob $dom
+    fi
+done

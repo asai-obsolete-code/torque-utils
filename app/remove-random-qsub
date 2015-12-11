@@ -1,0 +1,7 @@
+#!/bin/bash
+
+arg=${1:-results/}
+shift
+num=${2:-80}
+
+find $arg -name "*.qsub" | sort -R | head -n -$num | xargs rm

@@ -1,0 +1,10 @@
+#!/bin/bash
+
+find results -name "*.out" | \
+    while read out ; do
+    if grep fun007 $out
+    then
+        rm -v ${out%%.*}*
+    fi
+done
+

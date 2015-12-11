@@ -1,0 +1,6 @@
+#!/bin/bash
+
+git submodule foreach "git checkout master ; git pull"
+subs=$(git submodule status | awk "{print $2}")
+git add $subs
+git commit -m "auto-commit $subs"

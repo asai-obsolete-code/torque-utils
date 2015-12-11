@@ -1,0 +1,70 @@
+#!/bin/sh
+#|-*- mode:lisp -*-|#
+#|
+exec ros -Q -- $0 "$@"
+|#
+
+(ql:quickload '(:alexandria :trivia :lparallel) :silent t)
+(defpackage :shuffle
+  (:use :cl :alexandria :trivia :lparallel)
+  (:export
+   #:shuffle-domain-file))
+
+(in-package :shuffle)
+(declaim (sb-ext:muffle-conditions style-warning))
+
+(defstruct mynil)
+(defparameter *nil* (make-mynil))
+(defmethod print-object ((o mynil) s)
+  (format s "()"))
+
+(defparameter *kernel* (make-kernel 1))
+
+(defun sdomain (form)
+  (ematch form
+    ((list* 'define (list 'domain name)
+            (and body
+                 (alist (:requirements . requirements)
+                        (:predicates . predicates)
+                        (:functions . functions)
+                        (:types . types)
+                        (:constants . constants))))
+     `(define (domain ,name)
+          (:requirements ,@requirements)
+        (:predicates ,@(shuffle predicates))
+        ,@(when types `((:types ,@types)))
+        ,@(when constants `((:constants ,@constants)))
+        ,@(when functions `((:functions (total-cost) - number)))
+        ,@(mapcar #'uglify (shuffle (actions body)))))))
+
+(defun actions (body)
+  (remove-if-not (lambda (x) (eq x :action)) body :key #'car))
+
+(let ((id 0))
+  (defun uglify (actiondef)
+    (match actiondef
+      ((list* :action name :parameters params rest)
+       (incf id)
+       (list* :action (intern (format nil "~:@(UGLY~a~a~)" id name))
+              :parameters (or params *nil*)
+              rest)))))
+
+(defun shuffle-domain-file (pathname)
+  (print pathname)
+  (let ((*package* (find-package :shuffle))
+        (*print-escape* t)
+        (*print-case* :downcase)
+        form)
+    (with-open-file (in pathname)
+      (setf form (sdomain (read in))))
+    (delete-file pathname)
+    (with-open-file (out pathname
+                         :direction :output
+                         :if-does-not-exist :create
+                         :if-exists :error) ;; intervention from the outside?
+      (print form out))))
+
+(defun main (&rest argv)
+  (declare (ignorable argv))
+  (pmapc #'shuffle-domain-file
+         (mappend #'directory argv)))

@@ -1,0 +1,15 @@
+#!/bin/bash
+
+((grep -l -r debugger results/ | sort -u) ; \
+ (grep -l -r debugger results/ | sort -u | xargs grep -l "ebadf\|applicable" | sort -u )) \
+  | sort | uniq -u
+
+
+# ./grep-debugger.sh
+# results/ipc-ipc+tidybot-mod-probe2tl30sl-e76baf-2015-07-14-20-35/woodworking-ipc11/p10.probe2tl30sl.1800.2000000.err ...
+
+# ./grep-debugger.sh > debugger-entered
+# 保存しておかないと、rerun後にどれをrerunしたかわからなくなる
+
+# cat debugger-entered | cut -d. -f1-2 | while read l ; do dqsub $ipc $l.qsub ; done
+

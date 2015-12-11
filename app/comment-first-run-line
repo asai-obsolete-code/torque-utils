@@ -1,0 +1,14 @@
+#!/usr/bin/awk -f
+
+/^ *#/{
+    print
+}
+
+/^ *[^#]/{
+    if (first==0){
+        print "#", $0
+        first=1
+    }else{
+        print
+    }
+}

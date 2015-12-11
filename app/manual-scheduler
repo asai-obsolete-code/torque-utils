@@ -1,0 +1,15 @@
+#!/bin/bash
+
+while :
+do
+    $(dirname $0)/../aflab-303cluster/qgrep "asai.*Q" | while read id ; do
+        allbusy=true
+        echo submitting job $id
+        for fun in fun00{6..9}
+        do
+            qrun -H $fun $id && { allbusy=false ; break ; }
+        done
+        $allbusy && break
+    done
+    sleep 15
+done

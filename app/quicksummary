@@ -1,0 +1,17 @@
+#!/bin/bash
+
+regex=${*:-"*"}
+
+for d in $regex
+do
+    count=$(find $d -name "*.plan*" | wc -l)
+    # count2=$(find $d -name "*.out" | xargs -n 1 grep "Solution found!" | wc -l)
+    echo -n "$d $count"
+    #  $count2
+    for dd in $d/*
+    do
+        count=$(find $dd -name "*.plan*" | wc -l)
+        echo -n " $count"
+    done
+    echo
+done

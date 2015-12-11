@@ -1,0 +1,31 @@
+#!/bin/bash
+
+min=${1:-1000}
+nextrun=${2:-nextrun}
+
+grep -v " *#" $nextrun
+
+message (){
+    echo "-------------------------------------------------------------"
+    echo "Remaining experiments in $nextrun:"
+    grep -v "#" $nextrun
+    echo "^^^ Remaining experiments in $nextrun ^^^"
+    date
+    pwd
+    echo " Refill when the # of jobs is below $min"
+}
+
+message
+
+while :
+do
+    if [ $(qstat -B | grep funlucy | awk '{print $4}') -lt $min ]
+    then
+        qsub-one-line $nextrun || break
+        message
+    fi
+    sleep 60
+done
+
+echo "input line exhausted!"
+

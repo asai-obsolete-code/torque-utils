@@ -1,0 +1,9 @@
+#!/bin/bash
+
+echo $(first-run-line $1)
+eval $(first-run-line $1)
+
+cp $1 $1.old
+
+comment-first-run-line < $1.old | tee $1
+

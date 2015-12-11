@@ -1,0 +1,33 @@
+#!/bin/bash
+
+
+# $1 = results/aaai16prelim3-XXX
+
+[ -z $1 ] && {
+    echo "invalid argument! : $1   Example: $0 results/aaai16prelim3-XXX" >&2
+    exit 1
+}
+
+[ -z $2 ] || {
+    echo "too many arguments! : $@" >&2
+    exit 1
+}
+
+dir_set=$(basename $1)
+set=${dir_set%%-*}
+
+echo $dir_set
+echo $set
+# exit 1
+
+[ -z $set ] && {
+    echo "invalid argument! : $1" >&2
+    exit 1
+}
+
+for f in sets/$set/*/*.pddl
+do
+    rel_f=$(echo $f | cut -d/ -f3-)
+    ln -s "../../../$f" $1/$rel_f
+done
+

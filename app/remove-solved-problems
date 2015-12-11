@@ -1,0 +1,16 @@
+#!/bin/bash
+
+if [[ $1 == --help ]]
+then
+    echo "usage: $0 [grep args]"
+fi
+
+find results/ -name "*.qsub" | grep $@ | while read qsub
+do
+    prefix=${qsub%.*}
+    if [ -e $prefix*.plan.1 ]
+    then
+        echo "$($run || echo "(Dry run)") rm $prefix*" >&2
+        echo "rm $prefix*"
+    fi
+done

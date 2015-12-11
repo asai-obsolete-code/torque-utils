@@ -1,0 +1,14 @@
+#!/bin/bash
+# -*- mode:sh -*-
+
+drop=~/Dropbox/component-planner/
+
+grep=${1:-".*"}
+
+mkdir -p results
+
+(ls $drop/* || exit 1) | grep "$grep" | while read line
+do
+    echo "unpacking: $line"
+    tar xf $line
+done
