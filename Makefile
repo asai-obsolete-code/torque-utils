@@ -20,4 +20,4 @@ mwup-bin: mwup
 	ln -s mwup/mwup ./mwup-bin
 
 clean:
-	rm -r mwup*
+	rm -rf mwup*
