@@ -16,5 +16,5 @@ mwup:
 	git clone "git@github.com:guicho271828/mwup.git"
 
 mwup-bin: mwup
-	cd mwup; make
+	make -C mwup
 	ln -s mwup/mwup ./mwup-bin
