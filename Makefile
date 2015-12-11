@@ -4,7 +4,7 @@
 .SUFFIXES: %.ros
 .PRECIOUS: %.depend %.make
 
-all: aflab-303cluster mwup
+all: aflab-303cluster mwup-bin
 
 
 %: Makefile
@@ -14,5 +14,7 @@ aflab-303cluster:
 
 mwup:
 	git clone "git@github.com:guicho271828/mwup.git"
-	$(MAKE) -C mwup
-	ln -s mwup/mwup ./mwup
+
+mwup-bin: mwup
+	cd mwup; make
+	ln -s mwup/mwup ./mwup-bin
