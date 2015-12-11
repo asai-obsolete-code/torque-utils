@@ -1,0 +1,15 @@
+#!/bin/bash
+
+clean-plan (){
+    sed -e 's/;.*$//g' $1 | sed -e '/^$/d'
+}
+
+all=$(clean-plan $1 | wc -l)
+split=${2:-1}
+line=$((all/split))
+
+# split --verbose -d -l $line $1 ${1/plan/macro.}
+
+#  <(sed -e 's/;.*$//g' -e '/^$/d' $1)
+
+split --verbose -d -l $line <(clean-plan $1) ${1/plan/macro.}
