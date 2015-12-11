@@ -2,29 +2,14 @@
 
 . $WORLD_HOME/template/common.sh
 
-sets="set8 set9"
+sets="split1 split2 split3 split4 split5 split6 split7 split8 split9 split10 set1"
 
-expected_conf="ipc"
-tl="tl15"
+expected_conf="test10"
 
 echo "#!/bin/bash"
 
-# heuristics="yh mc ja"
-# for h in $heuristics; do for s in $sets ; do
-#         p="${h}${h}"
-#         ref $p >/dev/null
-#         gen -s $s -n $h $base $(ref $p) $plain
-#         echo "run $expected_conf results/$s*-${h}-*"
-#     done
-# done
-
-heuristics="mcmc jaja"
-# heuristics="yhyh mcmc jaja yhja yhmc"
-for p in $heuristics; do for s in $sets ; do
-        ref $p >/dev/null
-        gen -s $s -n ${p}  $base $(ref $p) $(ref $tl) $macrocost $ca
-        echo "run $expected_conf results/$s*-${p}-*"
-    done
+p=lama
+for s in $sets ; do
+    gen -s $s -n ${p} $base $macrocost
+    echo "run $expected_conf results/$s-*-${p}-*"
 done
-
-
