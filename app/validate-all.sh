@@ -1,9 +1,5 @@
 #!/bin/bash
 
-. $WORLD_HOME/summarize/summarize-util.sh
-
-val=$WORLD_HOME/CAP/downward/src/validate
-
 debuglevel=1
 case $1 in
     -d) debuglevel=$(($2))
@@ -15,14 +11,13 @@ case $1 in
     *) ;;
 esac
 
+val=$WORLD_HOME/util/validate
 set=$1
-
 i=1
 max=60
 failed=$(mktemp)
 invalid=$(mktemp)
 notrun=$(mktemp)
-trap "finalize" EXIT
 
 newline (){
     if [[ $i -gt $max ]]
@@ -31,9 +26,12 @@ newline (){
         i=1
     fi
 }
-validate (){
-    # ignore unmatching files
-    # ( readlink -ef $log | grep $regex ) 2>/dev/null || return 1
+
+val-plus (){
+
+    problem=$1
+    probname=${problem%%.*}
+    log=$(ls $probname.*.out | head -n 1)
     if [[ ! -e $log ]]
     then
         echo -n e
@@ -42,18 +40,17 @@ validate (){
         printf "%20s%40s\n" "$domname" "$probname.$config.qsub" >> $notrun
         return 1
     fi
-    if [[ -e domain.pddl ]]
+    if [[ -e $(dirname $problem)/domain.pddl ]]
     then
-        domain=domain.pddl
+        domain=$(dirname $problem)/domain.pddl
     else
         domain=$probname-domain.pddl
     fi
     newline
-    if ls $probname.$config.plan* &>/dev/null
+    if ls $probname.*.plan* &>/dev/null
     then
-        for plan in $(ls $probname.$config.plan* 2>/dev/null)
+        for plan in $(ls $probname.*.plan* 2>/dev/null)
         do
-            # echo "$val $domain $problem $plan"
             if $val $domain $problem $plan &> /dev/null
             then
                 echo -n .
@@ -68,7 +65,7 @@ validate (){
         echo -n F
         i=$(( $i + 1 ))
         newline
-        printf "%20s%40s%60s\n" "$set" "$domname" "$probname.$config.plan*" >> $failed
+        printf "%20s%40s%60s\n" "$set" "$domname" "$probname.*.plan*" >> $failed
         return 1
     fi
 }
@@ -90,5 +87,8 @@ finalize (){
     echo "Debugger Entered:"
     find -name "*.err" | xargs -n 1 grep -H "debugger" | cut -f1 -d:
 }
+trap "finalize" EXIT
 
-( cd $set &>/dev/null ;  mapdom mapprob validate )
+find $set -name "*.pddl" | grep -v domain | while read line ; do 
+    val-plus $line
+done
