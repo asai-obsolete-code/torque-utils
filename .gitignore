@@ -9,3 +9,5 @@ TAGS
 sets/*
 /mwup-bin
 /nextrun
+*.old
+*.bug
