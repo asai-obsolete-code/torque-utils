@@ -7,7 +7,8 @@
 run=true
 random=false
 name=noname
-while getopts ":R:n:s:" opt
+filter=cat
+while getopts ":R:n:s:f:" opt
 do
     case ${opt} in
         R)  # random
@@ -15,6 +16,7 @@ do
             random=true ;;
         n)  name=${OPTARG} ;;
         s)  probset=${OPTARG} ;;
+        f)  filter=${OPTARG} ;;
         \?) OPT_ERROR=1; break ;;
         * ) echo "unsupported option $opt" ;;
     esac
@@ -101,6 +103,7 @@ probname=$probname
 domain=$domain
 domname=$domname
 args="$*"
+filter="$filter"
 . $template
 EOF
 }
