@@ -2,17 +2,15 @@
 
 . $WORLD_HOME/template/common.sh
 
-# sets="split1 split2 split3 split4 split5 split6 split7 split8 split9 split10"
-# sets="set1"
-# sets="split1 split2 split10"
-sets="split3 split4 split5 split6 split7 split8 split9"
 
-expected_conf="test10"
+sets="set1"
+
+expected_conf="long"
 
 echo "#!/bin/bash"
 
 p=lama
 for s in $sets ; do
-    gen -s $s -n ${p} $base $macrocost
+    gen -s $s -n ${p} $base $macrocost $(blind 11) $nocost
     echo "run $expected_conf results/$s-*-${p}-*"
 done
