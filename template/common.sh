@@ -36,6 +36,10 @@ export lama2011="
 
 export lama="           --search fd-clean '$lama2011' -"
 export lmcut="          --search fd-clean --search 'astar(lmcut())' -"
+blind (){
+    echo "--search fd-clean --heuristic 'h=blind()' --search 'eager(tiebreaking([sum([g(),h]),h]),bound=$1)' -"
+}
+export -f blind
 
 # CAP configs
 {
