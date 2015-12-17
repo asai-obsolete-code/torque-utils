@@ -11,3 +11,5 @@ sets/*
 /nextrun
 *.old
 *.bug
+/allpaths10.tar.gz
+/sets
