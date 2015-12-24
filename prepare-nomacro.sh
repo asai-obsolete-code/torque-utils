@@ -47,7 +47,7 @@ filter (){
 p=lama
 for s in $sets ; do
     length=${s##macros}
-    for percent in 10 20 50 90
+    for percent in 0
     do
         (
             gen -s $s -n ${p}-$length-$percent $base $macrocost
