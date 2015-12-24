@@ -8,13 +8,15 @@ run=true
 random=false
 name=noname
 filter=cat
-while getopts ":R:n:s:f:" opt
+macropercent=0
+while getopts ":R:n:s:f:m:" opt
 do
     case ${opt} in
         R)  # random
             howmany=${OPTARG}
             random=true ;;
         n)  name=${OPTARG} ;;
+        m)  macropercent=${OPTARG};;
         s)  probset=${OPTARG} ;;
         f)  filter=${OPTARG} ;;
         \?) OPT_ERROR=1; break ;;
@@ -54,10 +56,21 @@ probdir=sets/$probset
 mkdir -p results
 expdir=results/$(expdir-name $probdir)
 
-find $probdir -name "*.pddl" -or -name "*.macro.*" | while read src ; do
+find $probdir -name "*.pddl" | while read src ; do
     dest=$expdir${src##$probdir}
     mkdir -p $(dirname $dest)
     ln -s ../../../$src $dest
+done
+
+RAND_MAX=32767
+
+find $probdir -name "*.macro.*" | while read src ; do
+    if [ $(echo "scale=2 ; ($RANDOM/$RAND_MAX)*100" | bc | sed "s/\.*//g") -lt $macropercent ]
+    then
+        dest=$expdir${src##$probdir}
+        mkdir -p $(dirname $dest)
+        ln -s ../../../$src $dest
+    fi
 done
 
 # git archive \
