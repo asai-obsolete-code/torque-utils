@@ -62,15 +62,31 @@ find $probdir -name "*.pddl" | while read src ; do
     ln -s ../../../$src $dest
 done
 
-RAND_MAX=32767
+# below method is far from ideal, the result does not corresponds to the given percent
+# RAND_MAX=32767
+# find $probdir -name "*.macro.*" | while read src ; do
+#     if [ $(echo "scale=2 ; ($RANDOM/$RAND_MAX)*100" | bc | sed "s/\.*//g") -lt $macropercent ]
+#     then
+#         dest=$expdir${src##$probdir}
+#         mkdir -p $(dirname $dest)
+#         ln -s ../../../$src $dest
+#     fi
+# done
 
-find $probdir -name "*.macro.*" | while read src ; do
-    if [ $(echo "scale=2 ; ($RANDOM/$RAND_MAX)*100" | bc | sed "s/\.*//g") -lt $macropercent ]
-    then
+for prob in $(ls $probdir/*/*.pddl | grep -v domain)
+do
+    wild="${prob%%.pddl}.macro.*"
+    total=$(ls $wild | wc -l)
+    # chosen=$(echo "scale=2 ; 0.01+($total*$macropercent)/100" | bc | sed "s/\..*//g")
+    chosen=$(echo "$total $macropercent" | awk '{print int($1 * $2 / 100) }')
+    [ $chosen == 0 ] && chosen=1
+    # echo "total: $total chosen: $chosen" >&2
+    for src in $(ls $wild | sort -R | head -n $chosen)
+    do
         dest=$expdir${src##$probdir}
         mkdir -p $(dirname $dest)
         ln -s ../../../$src $dest
-    fi
+    done
 done
 
 # git archive \
