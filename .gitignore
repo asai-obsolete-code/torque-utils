@@ -13,3 +13,10 @@ sets/*
 *.bug
 /allpaths10.tar.gz
 /sets
+/allpaths10-processed.tar.gz
+/failed/
+/mwup
+/mwup-modified-dump-all-paths/
+/nextrun-allpath
+/ok/
+/old2/
