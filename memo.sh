@@ -8,7 +8,7 @@
 # before removing: 598 problems
 
 # step1: remove when f=10 did not fit in 2GB
-find -name "*.pddl" | grep -v domain | while read f
+find results/set1* -name "*.pddl" | grep -v domain | while read f
 do
  (ls ${f%%.pddl}.*.plan.* &> /dev/null) || (rm ${f%%.pddl}*)
 done
@@ -21,11 +21,11 @@ done
 # done
 
 # step2: remove unnecessary files
-find -name "*.qsub" -delete
-find -name "*.err" -delete
+find results/set1* -name "*.qsub" -delete
+find results/set1* -name "*.err" -delete
 
 # step3: remove when the data transfer did not finish
-find -name "*.out" | while read f
+find results/set1* -name "*.out" | while read f
 do
     # ls ${f%%out}plan* | wc -l
     # awk -e '/Number of registered states/{print $5}' < $f
