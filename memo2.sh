@@ -26,45 +26,11 @@ do
         name=${name%%.*}
         echo "ng: $(dirname $f)/$name*"
         rm $(dirname $f)/$name*
+        # also remove the domain files
     fi
 done
 
-
-# remaining problems: 212
-# ng: ./set1-master-lama-665919-2015-12-16-17-26-step2/psr-small/p15*
-# ng: ./set1-master-lama-665919-2015-12-16-17-26-step2/visitall-opt11-strips/p08*
-# ng: ./set1-master-lama-665919-2015-12-16-17-26-step2/blocks/p25*
-# ng: ./set1-master-lama-665919-2015-12-16-17-26-step2/transport-opt11-strips/p04*
-# ng: ./set1-master-lama-665919-2015-12-16-17-26-step2/hanoi/p11*
-# ng: ./set1-master-lama-665919-2015-12-16-17-26-step2/hanoi/p10*
-# ng: ./set1-master-lama-665919-2015-12-16-17-26-step2/hanoi/p09*
-# ng: ./set1-master-lama-665919-2015-12-16-17-26-step2/hanoi/p12*
-# ng: ./set1-master-lama-665919-2015-12-16-17-26-step2/hanoi/p08*
-# ng: ./set1-master-lama-665919-2015-12-16-17-26-step2/hanoi/p13*
-# ng: ./set1-master-lama-665919-2015-12-16-17-26-step2/mystery/p11*
-# ng: ./set1-master-lama-665919-2015-12-16-17-26-step2/tpp/p05*
-# ng: ./set1-master-lama-665919-2015-12-16-17-26-step2/logistics00/p004*
-# ng: ./set1-master-lama-665919-2015-12-16-17-26-step2/logistics00/p005*
-# ng: ./set1-master-lama-665919-2015-12-16-17-26-step2/logistics00/p010*
-# ng: ./set1-master-lama-665919-2015-12-16-17-26-step2/logistics00/p006*
-# ng: ./set1-master-lama-665919-2015-12-16-17-26-step2/logistics00/p011*
-# ng: ./set1-master-lama-665919-2015-12-16-17-26-step2/logistics00/p009*
-# ng: ./set1-master-lama-665919-2015-12-16-17-26-step2/logistics00/p008*
-# ng: ./set1-master-lama-665919-2015-12-16-17-26-step2/sokoban-opt11-strips/p10*
-# ng: ./set1-master-lama-665919-2015-12-16-17-26-step2/parcprinter-opt11-strips/p05*
-# ng: ./set1-master-lama-665919-2015-12-16-17-26-step2/parcprinter-opt11-strips/p09*
-# ng: ./set1-master-lama-665919-2015-12-16-17-26-step2/pipesworld-notankage/p15*
-# ng: ./set1-master-lama-665919-2015-12-16-17-26-step2/pipesworld-notankage/p03*
-# ng: ./set1-master-lama-665919-2015-12-16-17-26-step2/depot/p03*
-# ng: ./set1-master-lama-665919-2015-12-16-17-26-step2/miconic/p31*
-# ng: ./set1-master-lama-665919-2015-12-16-17-26-step2/miconic/p35*
-
-# plus, removed mystery p03
-# tar: mystery/p03.lama.3600.2000000.plan.994: open 不能: 許可がありません
-# remaining problems: 211
-
-
-# change name based on the length
+# step4: change name based on the length
 
 find -name "*.plan.*" | while read f
 do
@@ -74,10 +40,6 @@ do
     name=${name%%.*}
     mv $f $(dirname $f)/$name.macro.$len.$id
 done
+
+# step5: remove logfile
 find -name "*.out" -delete
-
-
-# find -name "*-domain.pddl" | while read f
-# do
-#   [ -e $(basename $f -domain.pddl).pddl ] || rm $f
-# done
