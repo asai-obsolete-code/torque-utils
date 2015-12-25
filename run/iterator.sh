@@ -4,6 +4,7 @@
 
 echo "-*- truncate-lines : t -*- "
 echo "-*- truncate-lines : t -*- " >&2
+echo "$(whoami)@$(hostname)"
 echo $cg_cpuacct_parent
 echo $cg_cpuacct
 echo $cg_cpuacct_dir
