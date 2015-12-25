@@ -15,13 +15,13 @@ for s in $sets ; do
     for percent in 0 10 20 50 90
     do
         name=${p}-$length-$percent-ns
-        gen -m $percent -s $s -n $name $base $macrocost &
+        gen -m $percent -s $s -n $name $base $macrocost --junk $length $percent &
         echo "run $expected_conf results/$s-*-$name-*"
         for split in 1 2 3
         do
             name=${p}-$length-$percent-$split
             (
-                gen -m $percent -s $s -n $name $base $macrocost
+                gen -m $percent -s $s -n $name $base $macrocost --junk $length $percent 
                 expdir=$(ls -d results/$s-*-$name-*)
                 find sets/split3-$split -name "*.macro.*" | while read src ; do
                     dest=$expdir${src##sets/split3-$split}
