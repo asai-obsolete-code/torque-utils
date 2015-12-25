@@ -73,21 +73,24 @@ done
 #     fi
 # done
 
-for prob in $(ls $probdir/*/*.pddl | grep -v domain)
-do
-    wild="${prob%%.pddl}.macro.*"
-    total=$(ls $wild | wc -l)
-    # chosen=$(echo "scale=2 ; 0.01+($total*$macropercent)/100" | bc | sed "s/\..*//g")
-    chosen=$(echo "$total $macropercent" | awk '{print int($1 * $2 / 100) }')
-    [ $chosen == 0 ] && chosen=1
-    # echo "total: $total chosen: $chosen" >&2
-    for src in $(ls $wild | sort -R | head -n $chosen)
+if [ $macropercent != 0 ]
+then
+    for prob in $(ls $probdir/*/*.pddl | grep -v domain)
     do
-        dest=$expdir${src##$probdir}
-        mkdir -p $(dirname $dest)
-        ln -s ../../../$src $dest
+        wild="${prob%%.pddl}.macro.*"
+        total=$(ls $wild | wc -l)
+        # chosen=$(echo "scale=2 ; 0.01+($total*$macropercent)/100" | bc | sed "s/\..*//g")
+        chosen=$(echo "$total $macropercent" | awk '{print int($1 * $2 / 100) }')
+        [ $chosen == 0 ] && chosen=1
+        # echo "total: $total chosen: $chosen" >&2
+        for src in $(ls $wild | sort -R | head -n $chosen)
+        do
+            dest=$expdir${src##$probdir}
+            mkdir -p $(dirname $dest)
+            ln -s ../../../$src $dest
+        done
     done
-done
+fi
 
 # git archive \
 #     --format=tar \
