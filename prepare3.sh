@@ -12,7 +12,7 @@ echo "#!/bin/bash"
 p=lama
 for s in $sets ; do
     length=${s##macros}
-    for percent in 0 10 20 50 90
+    for percent in 1 2 5
     do
         name=${p}-$length-$percent-ns
         gen -s $s -n $name $base $macrocost --junk $length $percent &
@@ -20,14 +20,14 @@ for s in $sets ; do
         for split in 1 2 3
         do
             name=${p}-$length-$percent-$split
-            (
+            # (
                 gen -s $s -n $name $base $macrocost --junk $length $percent 
                 expdir=$(ls -d results/$s-*-$name-*)
                 find sets/split3-$split -name "*.macro.*" | while read src ; do
                     dest=$expdir${src##sets/split3-$split}
                     ln -s ../../../$src $dest
                 done
-            ) &
+            # ) &
             echo "run $expected_conf results/$s-*-$name-*"
         done
     done
