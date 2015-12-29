@@ -3,16 +3,16 @@
 . $WORLD_HOME/template/common.sh
 
 
-sets="macros2 macros3 macros4 macros5 macros6 macros7 macros8 macros9 macros10"
+# sets="macros2 macros3 macros4 macros5 macros6 macros7 macros8 macros9 macros10"
 
-expected_conf="ipc"
+expected_conf="ipcmicro"
 
 echo "#!/bin/bash"
 
+s=set1
 p=lama
-for s in $sets ; do
-    length=${s##macros}
-    for percent in 1 2 5
+for length in {2..10} ; do
+    for percent in 0.1 # 0.2 0.5 1 2 5
     do
         name=${p}-$length-$percent-ns
         gen -s $s -n $name $base $macrocost --junk $length $percent &
@@ -23,7 +23,7 @@ for s in $sets ; do
             # (
                 gen -s $s -n $name $base $macrocost --junk $length $percent 
                 expdir=$(ls -d results/$s-*-$name-*)
-                find sets/split3-$split -name "*.macro.*" | while read src ; do
+                find sets/split3-$split/ -name "*.macro.*" | while read src ; do
                     dest=$expdir${src##sets/split3-$split}
                     ln -s ../../../$src $dest
                 done
