@@ -20,7 +20,8 @@ export iter="--iterated"
 export macrocost="--add-macro-cost"
 export plain="--plain"
 
-export base="mwup-bin -t 3600 -m 2000000 -v"
+export base="mwup-bin -v -t 1800 -m 2000000 --megabytes-consed-between-gcs 100"
+export bare_base="mwup-bin -v --megabytes-consed-between-gcs 100"
 export nocost="--remove-cost"
 
 # planners
@@ -36,10 +37,19 @@ export lama2011="
 
 export lama="           --search fd-clean '$lama2011' -"
 export lmcut="          --search fd-clean --search 'astar(lmcut())' -"
+export lmcut_greedy="   --search fd-clean --search 'eager_greedy(lmcut())' -"
+export lmcut_lazy_greedy="   --search fd-clean --search 'lazy_greedy(lmcut())' -"
 blind (){
     echo "--search fd-clean --heuristic 'h=blind()' --search 'eager(tiebreaking([sum([g(),h]),h]),bound=$((1+$1)))' -"
 }
 export -f blind
+
+mands_h="--heuristic 'h=merge_and_shrink(shrink_strategy=shrink_bisimulation(max_states=100000,threshold=1,greedy=false),merge_strategy=merge_dfp(),label_reduction=label_reduction(before_shrinking=true,before_merging=false))'"
+export mands="          --search fd-clean $mands_h --search 'astar(h)'"
+export mands_greedy="   --search fd-clean $mands_h --search 'eager_greedy(h)' -"
+
+
+
 
 # CAP configs
 {
@@ -77,6 +87,8 @@ export ipc="   -g /$(whoami) -m 2000000 -M 2000000 -t 1800 -T 1800            -n
 export ipcmicro="   -g /$(whoami) -m 2000000 -M 2000000 -t 1800 -T 1800            -n 1:micro"
 export ipc4g="   -g /$(whoami) -m 4000000 -M 4000000 -t 1800 -T 1800          -n 1:fun"
 export long="   -g /$(whoami) -m 2000000 -M 2000000 -t 3600 -T 3600           -n 1:fun"
+export longiter="   -g /$(whoami) -m 2000000 -M 16000000 -t 14400 -T 14400    -n 1:fun"
+export longiterall="   -g /$(whoami) -m 2000000 -M 16000000 -t 14400 -T 14400 "
 export long16g=" -g /$(whoami) -m 16000000 -M 16000000 -t 3600 -T 3600        -n 1:fun"
 export doubling16g=" -g /$(whoami) -m 500000 -M 16000000 -t 3600 -T 3600      -n 1:fun"
 export learn=" -g /$(whoami) -m 4000000 -M 4000000 -t 900 -T 900              -n 1:fun"
