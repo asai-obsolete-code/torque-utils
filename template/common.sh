@@ -20,8 +20,7 @@ export iter="--iterated"
 export macrocost="--add-macro-cost"
 export plain="--plain"
 
-export base="mwup-bin -v -t 1800 -m 2000000 --megabytes-consed-between-gcs 100"
-export bare_base="mwup-bin -v --megabytes-consed-between-gcs 100"
+export base="mwup-bin -v --megabytes-consed-between-gcs 100"
 export nocost="--remove-cost"
 
 # planners
