@@ -30,7 +30,8 @@ newline (){
 val-plus (){
 
     problem=$1
-    probname=${problem%%.*}
+    probname=$(basename $problem)
+    probname=$(dirname $problem)/${probname%%.*}
     log=$(ls $probname.*.out | head -n 1)
     if [[ ! -e $log ]]
     then
