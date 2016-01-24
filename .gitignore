@@ -21,3 +21,6 @@ sets/*
 /ok/
 /old2/
 /skippedrun
+/test/per-domain-results
+/test/per-set-results
+/test/*/
