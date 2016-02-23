@@ -20,6 +20,7 @@ cp -v -t $tmp/ $dir/t02.pddl
 cp -v -t $tmp/ $dir/t03.pddl
 cp -v -t $tmp/ $problem
 cp -v -t $tmp/ $domain
+cp -v -t $tmp/ ${problem/pddl/macro}.*
 
 pushd $tmp
 eval "$args $(basename $problem) $(basename $domain)"
