@@ -20,7 +20,7 @@ export iter="--iterated"
 export macrocost="--add-macro-cost"
 export plain="--plain"
 
-export base="mwup-bin --dynamic-space-size 2000 -t 3600 -m 2000000 -v"
+export base="mwup-bin -t 3600 -m 2000000 -v"
 export nocost="--remove-cost"
 
 # planners
@@ -65,10 +65,10 @@ gen=gen
 # this requires /asai cgroup
 export test1=" -q agile -g /$(whoami) -m 2000000 -M 2000000 -t 60 -T 60"
 export test2=" -q agile -g /$(whoami) -m 2000000 -M 2000000 -t 120 -T 120"
-export test5=" -g /$(whoami) -m 2000000 -M 2000000 -t 300 -T 300"
-export test5_4g=" -q batch -g /$(whoami) -m 4000000 -M 4000000 -t 300 -T 300"
-export test10="-P 1 -q batch -g /$(whoami) -m 2000000 -M 2000000 -t 600 -T 600"
-export test20="-P 1 -g /$(whoami) -m 2000000 -M 2000000 -t 1200 -T 1200"
+export test5=" -q agile -g /$(whoami) -m 2000000 -M 2000000 -t 300 -T 300"
+export test5_4g=" -q agile -g /$(whoami) -m 4000000 -M 4000000 -t 300 -T 300"
+export test10="-q agile -g /$(whoami) -m 2000000 -M 2000000 -t 600 -T 600 -n 1:fun"
+export test20="-g /$(whoami) -m 2000000 -M 2000000 -t 1200 -T 1200"
 export ipc="   -g /$(whoami) -m 2000000 -M 2000000 -t 1800 -T 1800"
 export ipc4g="   -g /$(whoami) -m 4000000 -M 4000000 -t 1800 -T 1800"
 export long="   -g /$(whoami) -m 2000000 -M 2000000 -t 3600 -T 3600"
