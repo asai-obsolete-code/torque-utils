@@ -1,0 +1,50 @@
+#!/bin/bash
+
+clean-plan (){
+    sed -e 's/;.*$//g' $1 | sed -e '/^$/d'
+}
+
+finalize (){
+    rm $tmp
+}
+trap finalize EXIT
+
+tmp=$(mktemp)
+clean-plan $1 > $tmp
+
+all=$(wc -l < $tmp)
+split=${2:-1}
+line=$((all/split))
+
+# all = remainder * (line+1) + (split-remainder) * line
+# ↓
+# all = first     * (line+1) + second            * line
+
+first=$((all%split))
+second=$((split - first))
+
+prefix=${1/plan/macro.}
+
+macrofile (){
+    echo $prefix$(printf "%.2d" $1)
+    # macrofile 2 -> XXX.macro.02
+}
+
+for ((i=0; i<first; i++))
+do
+    sed -n "$((1+i*(line+1))),$(((i+1)*(line+1)))p" $tmp > $(macrofile $i)
+done
+
+for ((i=0; i<second; i++))
+do
+    sed -n "$((1+first*(line+1)+i*line)),$((first*(line+1)+(i+1)*line))p" $tmp > $(macrofile $((first+i)))
+done
+
+
+# split --verbose -d -l $line $1 ${1/plan/macro.}
+#  <(sed -e 's/;.*$//g' -e '/^$/d' $1)
+
+
+
+# split -d -l $line <(clean-plan $1) $prefix
+
