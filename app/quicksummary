@@ -1,17 +1,22 @@
 #!/bin/bash
 
-regex=${*:-"*"}
+if [ -z $COLUMN ]
+then
+    COLUMN=true $0 $@ | column -t
+else
+    regex=${*:-"*"}
 
-for d in $regex
-do
-    count=$(find $d -name "*.plan*" | wc -l)
-    # count2=$(find $d -name "*.out" | xargs -n 1 grep "Solution found!" | wc -l)
-    echo -n "$d $count"
-    #  $count2
-    for dd in $d/*
+    for d in $regex
     do
-        count=$(find $dd -name "*.plan*" | wc -l)
-        echo -n " $count"
+        count=$(find $d -name "*.plan*" | wc -l)
+        # count2=$(find $d -name "*.out" | xargs -n 1 grep "Solution found!" | wc -l)
+        echo -n "$d $count"
+        #  $count2
+        for dd in $d/*
+        do
+            count=$(find $dd -name "*.plan*" | wc -l)
+            echo -n " $count"
+        done
+        echo
     done
-    echo
-done
+fi
