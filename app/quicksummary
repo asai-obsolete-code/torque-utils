@@ -1,5 +1,25 @@
 #!/bin/bash
 
+if [ -z $1 ]
+then
+    cat >&2 <<EOF
+ Usage: quicksummary [-t coverage|plan] [DIRECTORIES...]
+
+coverage : count the number of problems solved
+plan     : count the number of plans found (possibly multiple plans per problem)
+
+EOF
+    exit 1
+fi
+
+export type=${type:-coverage}
+
+if [[ $1 == -t ]]
+then
+    type=$2
+    shift 2
+fi
+    
 if [ -z $COLUMN ]
 then
     COLUMN=true $0 $@ | column -t
@@ -8,7 +28,16 @@ else
 
     for d in $regex
     do
-        count=$(find $d -name "*.plan*" | wc -l)
+        case $type in
+            coverage)
+                # ignore the last number
+                count=$(find $d -name "*.plan*" | sed 's/\(.*\)\.[^.]*$/\1/g' | sort | uniq | wc -l) ;;
+            plan)
+                count=$(find $d -name "*.plan*" | wc -l) ;;
+            *)
+                echo "invalid type '$type' : should be one of : coverage, plan" >&2
+                exit 1
+        esac
         # count2=$(find $d -name "*.out" | xargs -n 1 grep "Solution found!" | wc -l)
         echo -n "$d $count"
         #  $count2
