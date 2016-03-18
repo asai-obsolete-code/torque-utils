@@ -1,17 +1,9 @@
 #!/bin/bash
 
-per_log (){
-    # VALIDATE cost 0 111 
-    # VALIDATE cost 1 111 
-    sed 's///g' < $1 | awk '$4 ~ /^[0-9]+$/ && /VALIDATE/ {print $4}'  | sort | head -n 1
-}
-
 fd_log (){
     # Best solution cost so far: 111
     awk '/Best solution cost so far/{best=$6}END{print best}' $1
 }
-
-export -f per_log
 
 sum (){
     let result=0
@@ -26,7 +18,7 @@ summarize1 (){
     then
         echo -n "${title:-$(basename $1)} "
     fi
-    sum=$(find $1 -name "*.log" | while read line ; do ${parse:-per_log} $line ; done | sum)
+    sum=$(find $1 -name "*.out" | while read line ; do ${parse:-fd_log} $line ; done | sum)
     echo $sum
 }
 
@@ -56,9 +48,7 @@ else
 
         if [ -z $PRINT_TITLE ]
         then
-            paste <(PRINT_TITLE=true parse=fd_log summarize2 original2/fd900/) \
-                <(PRINT_TITLE=false parse=fd_log summarize2 original2/fd1800/) \
-                <(PRINT_TITLE=false summarize2 $d) <(PRINT_TITLE=false $0 $@)
+            paste <(PRINT_TITLE=true summarize2 $d) <(PRINT_TITLE=false $0 $@)
         else
             paste <(PRINT_TITLE=false summarize2 $d) <(PRINT_TITLE=false $0 $@)
         fi
