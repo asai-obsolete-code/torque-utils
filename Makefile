@@ -7,7 +7,7 @@ submodules:
 	git submodule update --init --recursive --remote
 
 mwup-bin: submodules
-	make -C mwup
+	$(MAKE) -C mwup
 	ln -s mwup/mwup ./mwup-bin
 
 clean:
