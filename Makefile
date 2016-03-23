@@ -1,21 +1,12 @@
 
-.PHONY: all img preview .table
+.PHONY: submodules
 
-.SUFFIXES: %.ros
-.PRECIOUS: %.depend %.make
+all: mwup-bin
 
-all: aflab-303cluster mwup-bin
+submodules:
+	git submodule update --init --recursive --remote
 
-
-%: Makefile
-
-aflab-303cluster:
-	git clone "git@github.com:guicho271828/aflab-303cluster.git"
-
-mwup:
-	git clone "git@github.com:guicho271828/mwup.git"
-
-mwup-bin: mwup
+mwup-bin: submodules
 	make -C mwup
 	ln -s mwup/mwup ./mwup-bin
 
