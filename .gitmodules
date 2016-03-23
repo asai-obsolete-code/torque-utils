@@ -4,3 +4,5 @@
 [submodule "mwup"]
 	path = mwup
 	url = git@github.com:guicho271828/mwup.git
+        update = rebase
+        branch = latest-downward
