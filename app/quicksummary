@@ -29,7 +29,7 @@ else
     title=
     for d in $regex
     do
-        title="set cov $(echo $d/*/ | xargs -n 1 basename | sed 's/[aeiou]//g' | cut -c1-4 | while read line ; do echo -n " $line "; done )"
+        title="$(basename ${d%%-*}) cov $(echo $d/*/ | xargs -n 1 basename | sed 's/[aeiou]//g' | cut -c1-4 | while read line ; do echo -n " $line "; done )"
         if [[ $ptitle != $title ]]
         then
             echo $title
