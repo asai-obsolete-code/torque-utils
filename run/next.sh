@@ -52,7 +52,7 @@ next(){
         -l "nodes=$nodes:ppn=$ppn" \
         $([ -z $priority ] || echo "-p $priority") \
         $([ -z $queue ] || echo "-q $queue") \
-        -N $(basename $dir | head -c4)$(echo $outname | tail -c +2) \
+        -N $(basename $dir | sed 's/[aeiou]//g' | head -c4)$(echo $outname | tail -c +2) \
         -o $dir/$outname$jobname_suffix.out \
         -e $dir/$outname$jobname_suffix.err \
         -V $WORLD_HOME/run/iterator.sh
