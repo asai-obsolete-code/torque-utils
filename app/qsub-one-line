@@ -1,7 +1,7 @@
 #!/bin/bash
 
-echo $(first-run-line $1)
-eval $(first-run-line $1)
+echo $($(dirname $(readlink -ef $0))/first-run-line $1)
+eval $($(dirname $(readlink -ef $0))/first-run-line $1)
 
 cp $1 $1.old
 

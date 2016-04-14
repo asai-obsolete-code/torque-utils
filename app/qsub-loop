@@ -21,7 +21,7 @@ while :
 do
     if [ $(qstat -B | grep funlucy | awk '{print $4}') -lt $min ]
     then
-        qsub-one-line $nextrun || break
+        $(dirname $(readlink -ef $0))/qsub-one-line $nextrun || break
         message
     fi
     sleep 60
