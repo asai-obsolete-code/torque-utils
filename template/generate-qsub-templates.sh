@@ -7,12 +7,14 @@
 run=true
 random=false
 name=noname
-while getopts ":R:n:s:" opt
+root=results
+while getopts ":R:n:s:r:" opt
 do
     case ${opt} in
         R)  # random
             howmany=${OPTARG}
             random=true ;;
+        r)  root=${OPTARG}
         n)  name=${OPTARG} ;;
         s)  probset=${OPTARG} ;;
         \?) OPT_ERROR=1; break ;;
@@ -49,8 +51,8 @@ expdir-name (){
 }
 
 probdir=sets/$probset
-mkdir -p results
-expdir=results/$(expdir-name $probdir)
+mkdir -p $root
+expdir=$root/$(expdir-name $probdir)
 
 find $probdir -name "*.pddl" -or -name "*.macro.*" | while read src ; do
     dest=$expdir${src##$probdir}
