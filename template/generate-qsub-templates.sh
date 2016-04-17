@@ -14,7 +14,7 @@ do
         R)  # random
             howmany=${OPTARG}
             random=true ;;
-        r)  root=${OPTARG}
+        r)  root=${OPTARG} ;;
         n)  name=${OPTARG} ;;
         s)  probset=${OPTARG} ;;
         \?) OPT_ERROR=1; break ;;
