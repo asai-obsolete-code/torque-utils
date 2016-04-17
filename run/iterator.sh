@@ -29,7 +29,7 @@ echo $(($mem * 1024)) > $cg_memory_dir/memory.memsw.limit_in_bytes
 echo 100000 > $cg_cpu_dir/cpu.cfs_period_us
 echo $((100000 * $ppn)) > $cg_cpu_dir/cpu.cfs_quota_us
 
-sleep=60
+sleep=10
 walltime=
 mykill (){
     ps $1 &> /dev/null && {
