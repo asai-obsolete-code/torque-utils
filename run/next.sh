@@ -48,7 +48,7 @@ next(){
 
     if echodo qsub \
         -l "mem=$((200000 + $mem )),pmem=$((200000 + $mem ))" \
-        -l "walltime=$(( 120 + $time ))" \
+        -l "walltime=$(( 30 + $time ))" \
         -l "nodes=$nodes:ppn=$ppn" \
         $([ -z $priority ] || echo "-p $priority") \
         $([ -z $queue ] || echo "-q $queue") \
