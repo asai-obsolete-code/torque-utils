@@ -34,7 +34,26 @@ export lama2011="
 --always"
 
 export lama="           --search fd-clean '$lama2011' -"
-export lmcut="          --search fd-clean --search 'astar(lmcut())' -"
+
+lm="lmcut()"
+mn="merge_and_shrink(shrink_strategy=shrink_bisimulation(max_states=100000,threshold=1,greedy=false),merge_strategy=merge_dfp(),label_reduction=exact(before_shrinking=true,before_merging=false))"
+
+lmp="lmcut(cost_type=PLUSONE)"
+ffp="ff(cost_type=PLUSONE)"
+cep="cea(cost_type=PLUSONE)"
+gcp="goalcount(cost_type=PLUSONE)"
+mnp="merge_and_shrink(shrink_strategy=shrink_bisimulation(max_states=100000,threshold=1,greedy=false),merge_strategy=merge_dfp(),label_reduction=label_reduction(before_shrinking=true,before_merging=false),cost_type=PLUSONE)"
+cgp="cg(cost_type=PLUSONE)"
+lcp="lmcount(lm_rhw(),cost_type=PLUSONE)"
+
+lmo="lmcut(cost_type=ONE)"
+ffo="ff(cost_type=ONE)"
+ceo="cea(cost_type=ONE)"
+gco="goalcount(cost_type=ONE)"
+mno="merge_and_shrink(shrink_strategy=shrink_bisimulation(max_states=100000,threshold=1,greedy=false),merge_strategy=merge_dfp(),label_reduction=label_reduction(before_shrinking=true,before_merging=false),cost_type=ONE)"
+cgo="cg(cost_type=ONE)"
+lco="lmcount(lm_rhw(lm_cost_type=ONE,cost_type=ONE),cost_type=ONE)"
+
 
 # CAP configs
 {
