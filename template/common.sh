@@ -88,11 +88,11 @@ export test5_4g=" -q agile -g /$(whoami) -n 1:fun -m 4000000 -M 4000000 -t 300 -
 export test10="   -q agile -g /$(whoami) -n 1:fun -m 2000000 -M 2000000 -t 600 -T 600"
 export test20="            -g /$(whoami) -n 1:fun -m 2000000 -M 2000000 -t 1200 -T 1200"
 export ipc="               -g /$(whoami) -n 1:fun -m 2000000 -M 2000000 -t 1800 -T 1800"
-export ipc4g="             -g /$(whoami) -n 1:fun -m 4000000 -M 4000000 -t 1800 -T 1800 -u 4000000"
+export ipc4g="    -q long  -g /$(whoami) -n 1:fun -m 4000000 -M 4000000 -t 1800 -T 1800 -u 4000000"
 export long="              -g /$(whoami) -n 1:fun -m 2000000 -M 2000000 -t 3600 -T 3600"
 export long4g="            -g /$(whoami) -n 1:fun -m 4000000 -M 4000000 -t 3600 -T 3600 -u 4000000"
 export long16g="           -g /$(whoami) -n 1:fun -m 16000000 -M 16000000 -t 3600 -T 3600"
-export doubling16g="       -g /$(whoami) -n 1:fun -m 500000 -M 16000000 -t 3600 -T 3600"
+export iter16g="           -g /$(whoami) -n 1:fun -m 4000000 -M 16000000 -t 3600 -T 3600 -u 4000000"
 export learn="             -g /$(whoami) -n 1:fun -m 4000000 -M 4000000 -t 900 -T 900"
 
 export mco=" -g /$(whoami) -u 1000000 -m 4000000 -M 4000000 -t 1800 -T 1800"
