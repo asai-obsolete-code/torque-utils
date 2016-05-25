@@ -21,7 +21,7 @@ echodo (){
     echodo apt-get install -y libtool libglib2.0-dev mercurial g++ python flex bison g++-multilib ia32-libs # for fd
     echodo apt-get install -y cgroup-bin libffi-dev                                                         # for CAP
     echodo apt-get install -y htop byobu
-) &| tee apt-get.log &
+) |& tee apt-get.log &
 
 (
     [ -d roswell/ ] || (
@@ -35,7 +35,7 @@ echodo (){
         echodo make
         echodo make install
     )
-) &| tee roswell.log &
+) |& tee roswell.log &
 
 (
     # torque setting
@@ -45,7 +45,7 @@ echodo (){
     echodo pbsnodes -o localhost
     echodo qmgr -c "set queue batch keep_completed=0"
     
-) &| tee torque.log &
+) |& tee torque.log &
 
 cat >> /etc/profile <<EOF
 export EDITOR="emacs"
