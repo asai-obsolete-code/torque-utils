@@ -7,16 +7,16 @@ wait-install (){
     done
 }
 
-(
-    apt-get install -q git
-    apt-get install -q emacs24-nox                                             # for everything
-    apt-get install -q libcurses-perl                                    # for pbstop
-    apt-get install -q build-essential automake make autoconf cmake      # for build
-    apt-get install -q libcurl4-openssl-dev                              # for roswell
-    apt-get install -q libtool libglib2.0-dev mercurial g++ python flex bison g++-multilib ia32-libs # for fd
-    apt-get install -q cgroup-bin libffi-dev                                                         # for CAP
-    apt-get install -q htop byobu
-) &> apt-get.log &
+# (
+#     apt-get install -q git
+#     apt-get install -q emacs24-nox                                             # for everything
+#     apt-get install -q libcurses-perl                                    # for pbstop
+#     apt-get install -q build-essential automake make autoconf cmake      # for build
+#     apt-get install -q libcurl4-openssl-dev                              # for roswell
+#     apt-get install -q libtool libglib2.0-dev mercurial g++ python flex bison g++-multilib ia32-libs # for fd
+#     apt-get install -q cgroup-bin libffi-dev                                                         # for CAP
+#     apt-get install -q htop byobu
+# ) &> apt-get.log &
 
 # (
 #     [ -d roswell/ ] || (
