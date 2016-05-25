@@ -18,34 +18,34 @@ wait-install (){
     apt-get install -q htop byobu
 ) &> apt-get.log &
 
-(
-    [ -d roswell/ ] || (
-        wait-install git
-        git clone -b release https://github.com/roswell/roswell.git
-        cd roswell
-        wait-install aclocal autoheader automake autoconf
-        ./bootstrap
-        ./configure
-        wait-install make
-        make
-        make install
-    )
-) &> roswell.log &
-
-(
-    # torque setting
-    PATH="/opt/torque/bin:$PATH"
-    qmgr -c "create node localhost"
-    qmgr -c "set node localhost np=10000"
-    pbsnodes -o localhost
-    qmgr -c "set queue batch keep_completed=0"
-    
-) &> torque.log &
-
-cat >> /etc/profile <<EOF
-export EDITOR="emacs"
-export TZ="Asia/Tokyo"
-EOF
+# (
+#     [ -d roswell/ ] || (
+#         wait-install git
+#         git clone -b release https://github.com/roswell/roswell.git
+#         cd roswell
+#         wait-install aclocal autoheader automake autoconf
+#         ./bootstrap
+#         ./configure
+#         wait-install make
+#         make
+#         make install
+#     )
+# ) &> roswell.log &
+# 
+# (
+#     # torque setting
+#     PATH="/opt/torque/bin:$PATH"
+#     qmgr -c "create node localhost"
+#     qmgr -c "set node localhost np=10000"
+#     pbsnodes -o localhost
+#     qmgr -c "set queue batch keep_completed=0"
+#     
+# ) &> torque.log &
+# 
+# cat >> /etc/profile <<EOF
+# export EDITOR="emacs"
+# export TZ="Asia/Tokyo"
+# EOF
 
 # PATH=~/.roswell/bin:\$PATH
 
