@@ -12,6 +12,18 @@ echodo (){
     $*
 }
 
+write-wasabi-once (){
+    echo "Checking for wasabi-post-install in $1"
+    if ! grep wasabi-post-install $1
+    then
+        echo "Writing to $1"
+        echo ": wasabi-post-install" >> $1
+        cat >> $1
+    else
+        echo "Found wasabi-post-install, stopped."
+    fi
+}
+
 (
     echodo apt-get install -y git
     echodo apt-get install -y emacs24-nox                                             # for everything
@@ -47,12 +59,12 @@ echodo (){
     
 ) |& tee torque.log &
 
-cat >> /etc/profile <<EOF
+write-wasabi-once /etc/profile <<EOF
 export EDITOR="emacs"
 export TZ="Asia/Tokyo"
 EOF
 
-cat >> /home/ubuntu/.profile <<EOF
+write-wasabi-once /home/ubuntu/.profile <<EOF
 PATH=~/.roswell/bin:\$PATH
 EOF
 
