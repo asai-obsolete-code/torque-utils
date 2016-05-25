@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/bin/bash -x
 
 wait-install (){
     while ! which $@
@@ -7,68 +7,66 @@ wait-install (){
     done
 }
 
-echodo (){
-    echo $*
-    $*
-}
-
 write-wasabi-once (){
     echo "Checking for wasabi-post-install in $1"
     if ! grep wasabi-post-install $1
     then
         echo "Writing to $1"
-        echo ": wasabi-post-install" >> $1
+        echo "# wasabi-post-install" >> $1
         cat >> $1
     else
         echo "Found wasabi-post-install, stopped."
     fi
 }
 
-(
-    echodo apt-get install -y git
-    echodo apt-get install -y emacs24-nox                                             # for everything
-    echodo apt-get install -y libcurses-perl                                    # for pbstop
-    echodo apt-get install -y build-essential automake make autoconf cmake      # for build
-    echodo apt-get install -y libcurl4-openssl-dev                              # for roswell
-    echodo apt-get install -y libtool libglib2.0-dev mercurial g++ python flex bison g++-multilib ia32-libs # for fd
-    echodo apt-get install -y cgroup-bin libffi-dev                                                         # for CAP
-    echodo apt-get install -y htop byobu
-) |& tee apt-get.log &
+apt-get install -y git
+apt-get install -y emacs24-nox                                  # for everything
+apt-get install -y libcurses-perl                               # for pbstop
+apt-get install -y build-essential automake make autoconf cmake # for build
+apt-get install -y libcurl4-openssl-dev                         # for roswell
+apt-get install -y libtool libglib2.0-dev mercurial g++ python flex bison g++-multilib # for fd
+apt-get install -y cgroup-bin libffi-dev                                                         # for CAP
+apt-get install -y htop byobu
+
+[ -d roswell/ ] || git clone -b release https://github.com/roswell/roswell.git
 
 (
-    [ -d roswell/ ] || (
-        echodo wait-install git
-        echodo git clone -b release https://github.com/roswell/roswell.git
-        echodo cd roswell
-        echodo wait-install aclocal autoheader automake autoconf
-        echodo ./bootstrap
-        echodo ./configure
-        echodo wait-install make
-        echodo make
-        echodo make install
-    )
-) |& tee roswell.log &
+    cd roswell
+    wait-install aclocal autoheader automake autoconf
+    ./bootstrap
+    ./configure
+    wait-install make gcc 
+    make
+    make install
+)
 
-(
-    # torque setting
-    PATH="/opt/torque/bin:$PATH"
-    echodo qmgr -c "create node localhost"
-    echodo qmgr -c "set node localhost np=10000"
-    echodo pbsnodes -o localhost
-    echodo qmgr -c "set queue batch keep_completed=0"
-    
-) |& tee torque.log &
+# torque setting
+
+/opt/torque/sbin/pbs_mom
+/opt/torque/bin/qmgr -c "create node localhost"
+/opt/torque/bin/qmgr -c "set node localhost np=10000"
+/opt/torque/bin/pbsnodes -o localhost
+/opt/torque/bin/qmgr -c "set queue batch keep_completed=0"
+
+chmod +x /opt/torque/contrib/pbstop
+
+echo
 
 write-wasabi-once /etc/profile <<EOF
 export EDITOR="emacs"
 export TZ="Asia/Tokyo"
 EOF
 
-write-wasabi-once /home/ubuntu/.profile <<EOF
-PATH=~/.roswell/bin:\$PATH
+write-wasabi-once /etc/sudoers <<EOF
+Defaults	env_keep += "PATH EDITOR"
 EOF
 
-wait
+(
+    su ubuntu
+    write-wasabi-once /home/ubuntu/.profile <<EOF
+export PATH=~/.roswell/bin:/opt/torque/contrib:/opt/torque/bin:/opt/torque/sbin:\$PATH
+EOF
+)
 
 exit 0
 

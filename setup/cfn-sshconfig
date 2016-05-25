@@ -1,0 +1,21 @@
+#!/bin/bash -x
+
+. common
+config=${1:-~/.ssh/config}
+
+trap "rm $config.tmp" EXIT
+
+(
+    sed "/^# BEGIN $name-cfn/,/^# END $name-cfn/d" < $config
+
+    cat <<EOF
+# BEGIN $name-cfn
+Host $name
+HostName $(./cfn-hostname $name)
+User $user
+# END $name-cfn
+EOF
+
+) > $config.tmp
+
+cat $config.tmp > $config

@@ -1,0 +1,9 @@
+#!/bin/bash -x
+
+. common
+
+./cfn-sshconfig
+
+cat post_install.sh | ssh $name sudo bash
+
+
