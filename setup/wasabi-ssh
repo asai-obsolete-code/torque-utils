@@ -1,0 +1,10 @@
+#!/bin/bash
+
+
+ssh $(
+    aws ec2 describe-instances --instance-ids \
+        $(cfncluster instances wasabi | awk '{print $2}') \
+        | grep PublicDnsName \
+        | awk '{print $2}' \
+        | head -n 1 \
+        | sed 's/[",]//g' )
