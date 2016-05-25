@@ -49,4 +49,7 @@ wait-install (){
 
 # PATH=~/.roswell/bin:\$PATH
 
-wait
+# wait
+
+exit 0
+
