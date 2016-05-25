@@ -13,14 +13,14 @@ echodo (){
 }
 
 (
-    echodo apt-get install -q git
-    echodo apt-get install -q emacs24-nox                                             # for everything
-    echodo apt-get install -q libcurses-perl                                    # for pbstop
-    echodo apt-get install -q build-essential automake make autoconf cmake      # for build
-    echodo apt-get install -q libcurl4-openssl-dev                              # for roswell
-    echodo apt-get install -q libtool libglib2.0-dev mercurial g++ python flex bison g++-multilib ia32-libs # for fd
-    echodo apt-get install -q cgroup-bin libffi-dev                                                         # for CAP
-    echodo apt-get install -q htop byobu
+    echodo apt-get install git
+    echodo apt-get install emacs24-nox                                             # for everything
+    echodo apt-get install libcurses-perl                                    # for pbstop
+    echodo apt-get install build-essential automake make autoconf cmake      # for build
+    echodo apt-get install libcurl4-openssl-dev                              # for roswell
+    echodo apt-get install libtool libglib2.0-dev mercurial g++ python flex bison g++-multilib ia32-libs # for fd
+    echodo apt-get install cgroup-bin libffi-dev                                                         # for CAP
+    echodo apt-get install htop byobu
 ) &> apt-get.log &
 
 (
