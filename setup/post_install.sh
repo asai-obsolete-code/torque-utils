@@ -44,7 +44,7 @@ apt-get install -y htop byobu
 
 /opt/torque/sbin/pbs_mom
 /opt/torque/bin/qmgr -c "create node localhost"
-/opt/torque/bin/qmgr -c "set node localhost np=10000"
+/opt/torque/bin/qmgr -c "set node localhost np=1"
 /opt/torque/bin/pbsnodes -o localhost
 /opt/torque/bin/qmgr -c "set queue batch keep_completed=0"
 
