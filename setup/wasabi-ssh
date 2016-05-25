@@ -1,6 +1,6 @@
 #!/bin/bash
 
-ip=$(
+host=$(
     aws ec2 describe-instances --instance-ids \
         $(cfncluster instances wasabi | awk '{print $2}') \
         | grep PublicDnsName \
@@ -8,6 +8,6 @@ ip=$(
         | head -n 1 \
         | sed 's/[",]//g' )
 
-cat post_install.sh | ssh $ip sudo bash
+cat post_install.sh | ssh $host sudo bash
 
-ssh $ip
+ssh $host
