@@ -4,15 +4,9 @@ name=${1:-wasabi}
 user=${2:-ubuntu}
 
 echo -n "Obtaining the public DNS of $name ..."
-host=$(
-    aws ec2 describe-instances --instance-ids \
-        $(cfncluster instances $name | awk '{print $2}') \
-        | grep PublicDnsName \
-        | awk '{print $2}' \
-        | head -n 1 \
-        | sed 's/[",]//g' )
+host=$(./wasabi-hostname $name)
+echo "Done! : $host"
 
-echo "Done! it is $host"
 echo "Running post_install manually ..."
 
 cat post_install.sh | ssh $user@$host sudo bash
