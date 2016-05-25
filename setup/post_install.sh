@@ -44,6 +44,7 @@ wait-install (){
 
 cat >> /etc/profile <<EOF
 export EDITOR="emacs"
+export TZ="Asia/Tokyo"
 EOF
 
 # PATH=~/.roswell/bin:\$PATH
