@@ -102,7 +102,9 @@ echo home ; (
         wait
     ) &
     wait
-)
+) &
+
+wait
 
 exit 0
 
