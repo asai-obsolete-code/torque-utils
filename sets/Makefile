@@ -5,11 +5,13 @@ default: help
 
 help:
 	@echo possible targets:
-	@(for x in $(targets) ; do echo $$x ; done)
+	@(for x in $(targets) ; do if [ -d $$x ] ; then echo "$$x ✔" ; else echo "$$x" ; fi ; done )
 	@echo all --- all of them
 
 all: $(targets)
 
-%:
+%sat:
+	git clone https://github.com/guicho271828/$@.git
+%opt:
 	git clone https://github.com/guicho271828/$@.git
 
