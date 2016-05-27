@@ -1,0 +1,8 @@
+#!/bin/bash -x
+
+. common
+
+cfncluster delete $name
+cfncluster create -nr $name
+./cfn-sshconfig
+
