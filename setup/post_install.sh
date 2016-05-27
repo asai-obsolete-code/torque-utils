@@ -1,13 +1,13 @@
 #!/bin/bash -x
 
-# wait-install (){
-#     while ! which $@
-#     do
-#         sleep 1
-#     done
-# }
+wait_install (){
+    while ! which $@
+    do
+        sleep 1
+    done
+}
 
-write-wasabi-once (){
+write_wasabi_once (){
     echo "Checking for wasabi-post-install in $1"
     if ! grep wasabi-post-install $1
     then
@@ -32,10 +32,10 @@ write-wasabi-once (){
 # 
 # (
 #     cd roswell
-#     wait-install aclocal autoheader automake autoconf
+#     wait_install aclocal autoheader automake autoconf
 #     ./bootstrap
 #     ./configure
-#     wait-install make gcc 
+#     wait_install make gcc 
 #     make
 #     make install
 # )
@@ -52,18 +52,18 @@ write-wasabi-once (){
 # 
 # echo
 # 
-# write-wasabi-once /etc/profile <<EOF
+# write_wasabi_once /etc/profile <<EOF
 # export EDITOR="emacs"
 # export TZ="Asia/Tokyo"
 # EOF
 # 
-# write-wasabi-once /etc/sudoers <<EOF
+# write_wasabi_once /etc/sudoers <<EOF
 # Defaults	env_keep += "PATH EDITOR"
 # EOF
 # 
 # (
 #     su ubuntu
-#     write-wasabi-once /home/ubuntu/.profile <<EOF
+#     write_wasabi_once /home/ubuntu/.profile <<EOF
 # export PATH=~/.roswell/bin:/opt/torque/contrib:/opt/torque/bin:/opt/torque/sbin:\$PATH
 # EOF
 # )
