@@ -49,6 +49,7 @@ apt-get install -y htop byobu
 /opt/torque/bin/qmgr -c "set node localhost np=1"
 /opt/torque/bin/pbsnodes -o localhost
 /opt/torque/bin/qmgr -c "set queue batch keep_completed=0"
+/opt/torque/bin/qmgr -c "set queue batch allow_node_submit=true"
 
 chmod +x /opt/torque/contrib/pbstop
 
