@@ -69,6 +69,11 @@ EOF
 export PATH=~/.roswell/bin:/opt/torque/contrib:/opt/torque/bin:/opt/torque/sbin:\$PATH
 _byobu_sourced=1 . /usr/bin/byobu-launch
 export MAKEFLAGS="-j \$(cat /proc/cpuinfo | grep -c processor)"
+if [ "\$color_prompt" = yes ]; then
+    PS1='[\[\033[00;34m\]\u\[\033[00m\] \[\033[01;34m\]\W\[\033[00m\]]\\$ '
+else
+    PS1='[\u \W]\\$ '
+fi
 EOF
 )
 
