@@ -68,6 +68,7 @@ EOF
     write_wasabi_once /home/ubuntu/.profile <<EOF
 export PATH=~/.roswell/bin:/opt/torque/contrib:/opt/torque/bin:/opt/torque/sbin:\$PATH
 _byobu_sourced=1 . /usr/bin/byobu-launch
+export MAKEFLAGS="-j \$(cat /proc/cpuinfo | grep -c processor)"
 EOF
 )
 
