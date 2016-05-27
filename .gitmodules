@@ -1,8 +1,3 @@
 [submodule "aflab-303cluster"]
 	path = aflab-303cluster
-	url = git@github.com:guicho271828/aflab-303cluster.git
-[submodule "mwup"]
-	path = mwup
-	url = git@github.com:guicho271828/mwup.git
-        update = rebase
-        branch = latest-downward
+	url = https://github.com/guicho271828/aflab-303cluster.git
