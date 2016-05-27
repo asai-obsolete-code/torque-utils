@@ -1,11 +1,11 @@
 #!/bin/bash -x
 
-wait-install (){
-    while ! which $@
-    do
-        sleep 1
-    done
-}
+# wait-install (){
+#     while ! which $@
+#     do
+#         sleep 1
+#     done
+# }
 
 write-wasabi-once (){
     echo "Checking for wasabi-post-install in $1"
