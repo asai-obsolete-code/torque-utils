@@ -81,19 +81,19 @@ gen=gen
 
 
 # this requires /asai cgroup
-export test1="    -q agile -g /$(whoami) -n 1:fun -m 2000000 -M 2000000 -t 60 -T 60"
-export test2="    -q agile -g /$(whoami) -n 1:fun -m 2000000 -M 2000000 -t 120 -T 120"
-export test5="    -q agile -g /$(whoami) -n 1:fun -m 2000000 -M 2000000 -t 300 -T 300"
-export test5_4g=" -q agile -g /$(whoami) -n 1:fun -m 4000000 -M 4000000 -t 300 -T 300"
-export test10="   -q agile -g /$(whoami) -n 1:fun -m 2000000 -M 2000000 -t 600 -T 600"
-export test20="            -g /$(whoami) -n 1:fun -m 2000000 -M 2000000 -t 1200 -T 1200"
-export ipc="               -g /$(whoami) -n 1:fun -m 2000000 -M 2000000 -t 1800 -T 1800"
-export ipc4g="    -q long  -g /$(whoami) -n 1:fun -m 4000000 -M 4000000 -t 1800 -T 1800 -u 4000000"
-export long="              -g /$(whoami) -n 1:fun -m 2000000 -M 2000000 -t 3600 -T 3600"
-export long4g="            -g /$(whoami) -n 1:fun -m 4000000 -M 4000000 -t 3600 -T 3600 -u 4000000"
-export long16g="           -g /$(whoami) -n 1:fun -m 16000000 -M 16000000 -t 3600 -T 3600"
-export iter16g="           -g /$(whoami) -n 1:fun -m 4000000 -M 16000000 -t 3600 -T 3600 -u 4000000"
-export learn="             -g /$(whoami) -n 1:fun -m 4000000 -M 4000000 -t 900 -T 900"
+export test1="    -q agile  -m 2000000 -M 2000000 -t 60 -T 60"
+export test2="    -q agile  -m 2000000 -M 2000000 -t 120 -T 120"
+export test5="    -q agile  -m 2000000 -M 2000000 -t 300 -T 300"
+export test5_4g=" -q agile  -m 4000000 -M 4000000 -t 300 -T 300"
+export test10="   -q agile  -m 2000000 -M 2000000 -t 600 -T 600"
+export test20="             -m 2000000 -M 2000000 -t 1200 -T 1200"
+export ipc="                -m 2000000 -M 2000000 -t 1800 -T 1800"
+export ipc4g="              -m 4000000 -M 4000000 -t 1800 -T 1800"
+export long="               -m 2000000 -M 2000000 -t 3600 -T 3600"
+export long4g="             -m 4000000 -M 4000000 -t 3600 -T 3600"
+export long16g="            -m 16000000 -M 16000000 -t 3600 -T 3600"
+export iter16g="            -m 4000000 -M 16000000 -t 3600 -T 3600"
+export learn="              -m 4000000 -M 4000000 -t 900 -T 900"
 
 export mco=" -g /$(whoami) -u 1000000 -m 4000000 -M 4000000 -t 1800 -T 1800"
 

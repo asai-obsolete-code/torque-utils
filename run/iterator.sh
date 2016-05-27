@@ -4,30 +4,15 @@
 
 echo "-*- truncate-lines : t -*- "
 echo "-*- truncate-lines : t -*- " >&2
-echo $cg_cpuacct_parent
-echo $cg_cpuacct
-echo $cg_cpuacct_dir
-echo $cg_options
-echo "iterator.sh($$): removing and making cgdir"
 
-reset-dir (){
-    while [[ -e $1 ]]
-    do
-        rmdir -v $1/*
-        rmdir -v $1
-    done
-    mkdir -vp $1
-}
-reset-dir $cg_cpuacct_dir
-reset-dir $cg_memory_dir
-reset-dir $cg_cpu_dir
+# 5:memory:/user/1000.user/2.session
 
-echo 0 > $cg_memory_dir/memory.swappiness
-echo 1 > $cg_memory_dir/memory.use_hierarchy
-echo $(($mem * 1024)) > $cg_memory_dir/memory.limit_in_bytes
-echo $(($mem * 1024)) > $cg_memory_dir/memory.memsw.limit_in_bytes
-echo 100000 > $cg_cpu_dir/cpu.cfs_period_us
-echo $((100000 * $ppn)) > $cg_cpu_dir/cpu.cfs_quota_us
+cg_memory_dir=/sys/fs/cgroup/memory/$(cat /proc/self/cgroup | grep memory | cut -d: -f3)
+cg_cpuacct_dir=/sys/fs/cgroup/cpuacct/$(cat /proc/self/cgroup | grep cpuacct | cut -d: -f3)
+
+for f in $(ls $cg_memory_dir);do
+    [ -f $f ] && cat $f
+done
 
 sleep=10
 walltime=
@@ -42,6 +27,7 @@ mykill (){
         }
     }
 }
+
 twice-time (){
     echo "iterator.sh($$): Current iteration failed! Doubling the time..."
     echo "iterator.sh($$): status: time:$time maxtime:$maxtime"
@@ -99,8 +85,6 @@ check-memory (){
 finalize (){
     echo "iterator.sh($$): real $cpuusage (msec.)"
     echo "iterator.sh($$): maxmem $memusage (kB)"
-    rmdir -v $cg_cpuacct_dir/* $cg_memory_dir/*
-    rmdir -v $cg_cpuacct_dir $cg_memory_dir
 }
 trap finalize EXIT
 
@@ -110,40 +94,42 @@ update (){
     memusage=$(( $(< $cg_memory_dir/memory.max_usage_in_bytes) / 1024 ))
 }
 
-cgexec $cg_options $command &
-pid=$!
-start=$(date +%s)
-update
+$command
 
-while ps $pid &> /dev/null
-do
-    sleep 1
-    update
-    check-walltime || break
-    check-memory   || break
-done
+#  &
+# pid=$!
+# start=$(date +%s)
+# update
 
-wait $pid
-exitstatus=$?
+# while ps $pid &> /dev/null
+# do
+#     sleep 1
+#     update
+#     check-walltime || break
+#     check-memory   || break
+# done
 
-case $exitstatus in
-    0) echo "iterator.sh($$): The program successfully finished." ;;
-    *) 
-        echo "iterator.sh($$): Error occured. status: $exitstatus"
-        if ! check-walltime
-        then
-            twice-time && exit 1
-        fi
-        if ! check-memory
-        then
-            twice-memory && exit 1
-        fi
-        if check-memory && check-walltime
-        then
-            echo "iterator.sh($$): Finished within time/memory limit"
-        else
-            echo "iterator.sh($$): Exceeded the limit, but no extension available"
-        fi
-        ;;
-esac
+# wait $pid
+# exitstatus=$?
+
+# case $exitstatus in
+#     0) echo "iterator.sh($$): The program successfully finished." ;;
+#     *) 
+#         echo "iterator.sh($$): Error occured. status: $exitstatus"
+#         if ! check-walltime
+#         then
+#             twice-time && exit 1
+#         fi
+#         if ! check-memory
+#         then
+#             twice-memory && exit 1
+#         fi
+#         if check-memory && check-walltime
+#         then
+#             echo "iterator.sh($$): Finished within time/memory limit"
+#         else
+#             echo "iterator.sh($$): Exceeded the limit, but no extension available"
+#         fi
+#         ;;
+# esac
 
