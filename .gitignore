@@ -6,6 +6,7 @@ TAGS
 /old/
 sets/*
 !sets/README
+!sets/Makefile
 /mwup-bin
 /mwup
 /CAP
