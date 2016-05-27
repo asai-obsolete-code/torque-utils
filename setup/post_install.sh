@@ -21,6 +21,8 @@ write_wasabi_once (){
     fi
 }
 
+mkdird (){ mkdir $1 ; cd $1 ; }
+
 apt-get install -y git
 apt-get install -y emacs24-nox                                  # for everything
 apt-get install -y libcurses-perl                               # for pbstop
@@ -30,41 +32,39 @@ apt-get install -y libtool libglib2.0-dev mercurial g++ python flex bison g++-mu
 apt-get install -y cgroup-bin libffi-dev                                                         # for CAP
 apt-get install -y htop byobu
 
-[ -d roswell/ ] || git clone -b release https://github.com/roswell/roswell.git
-
-(
+echo roswell ; (
+    git clone -b release https://github.com/roswell/roswell.git
     cd roswell
-    wait_install aclocal autoheader automake autoconf
     ./bootstrap
     ./configure
-    wait_install make gcc 
     make
     make install
-)
+) &
 
-# torque setting
+echo torque ; (
+    /opt/torque/sbin/pbs_mom
+    /opt/torque/bin/qmgr -c "create node localhost np=1 state=offline"
+    /opt/torque/bin/qmgr -c "set server $(hostname) keep_completed=0 auto_node_np=false"
+    /opt/torque/bin/qmgr -c "set queue batch allow_node_submit=true"
+    chmod +x /opt/torque/contrib/pbstop
+) &
 
-/opt/torque/sbin/pbs_mom
-/opt/torque/bin/qmgr -c "create node localhost np=1 state=offline"
-/opt/torque/bin/qmgr -c "set server $(hostname) keep_completed=0 auto_node_np=false"
-/opt/torque/bin/qmgr -c "set queue batch allow_node_submit=true"
-
-nohup bash -c "( while : ; do sleep 1 ; pbsnodes -o localhost && break ; done )" &
-
-chmod +x /opt/torque/contrib/pbstop
-
-echo
-
-write_wasabi_once /etc/profile <<EOF
+echo profile ; (
+    write_wasabi_once /etc/profile <<EOF
 export EDITOR="emacs"
 export TZ="Asia/Tokyo"
 EOF
+) &
 
-write_wasabi_once /etc/sudoers <<EOF
+echo sudoer ; (
+    write_wasabi_once /etc/sudoers <<EOF
 Defaults	env_keep += "PATH EDITOR"
 EOF
+) &
 
-(
+
+
+echo home ; (
     su ubuntu
     cd /home/ubuntu
     write_wasabi_once .profile < (
@@ -76,7 +76,6 @@ EOF
 
     . .profile
     
-    function mkdird (){ mkdir $1 ; cd $1 ; }
     (
         mkdird repos
         (
