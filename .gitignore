@@ -7,3 +7,6 @@ TAGS
 sets/*
 !sets/README
 /mwup-bin
+/mwup
+/CAP
+/component-planner
