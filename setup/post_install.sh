@@ -67,24 +67,42 @@ EOF
 (
     su ubuntu
     cd /home/ubuntu
-    write_wasabi_once .profile <<EOF
-export PATH=~/.roswell/bin:/opt/torque/contrib:/opt/torque/bin:/opt/torque/sbin:\$PATH
-_byobu_sourced=1 . /usr/bin/byobu-launch
-export MAKEFLAGS="-j \$(cat /proc/cpuinfo | grep -c processor)"
-PS1='[\\u \\W]\\$
-EOF
+    write_wasabi_once .profile < (
+        echo 'export PATH=~/.roswell/bin:/opt/torque/contrib:/opt/torque/bin:/opt/torque/sbin:$PATH'
+        echo '_byobu_sourced=1 . /usr/bin/byobu-launch'
+        echo 'export MAKEFLAGS="-j $(cat /proc/cpuinfo | grep -c processor)"'
+        echo 'PS1="[\u \W]\$'
+    )
 
-mkdir repos ; cd repos
-git clone https://github.com/guicho271828/torque-utils.git
-cd torque-utils
+    . .profile
+    
+    function mkdird (){ mkdir $1 ; cd $1 ; }
+    (
+        mkdird repos
+        (
+            git clone https://github.com/guicho271828/torque-utils.git
+            cd torque-utils
+            make &
+            make mwup-bin &
+            make -C sets all &
+            wait
+        ) &
+        wait
+    ) &
 
-export MAKEFLAGS="-j $(cat /proc/cpuinfo | grep -c processor)"
-
-make &
-make mwup-bin &
-make -C sets all &
-wait
-
+    (
+        mkdird Dropbox
+        (
+            git clone https://github.com/guicho271828/site-lisp.git
+            make -C site-lisp
+        ) &
+        (
+            git clone https://github.com/guicho271828/rcfiles.git
+            make -C rcfiles
+        ) &
+        wait
+    ) &
+    wait
 )
 
 exit 0
