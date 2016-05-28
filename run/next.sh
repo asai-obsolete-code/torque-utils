@@ -10,7 +10,7 @@ next(){
     variables=$(
         for var in $export_vars EOV
         do
-            eval "echo -n ,$var=\$$var"
+            eval "echo -n ,$var=\"\$$var\""
         done
     )
     if echodo qsub \
