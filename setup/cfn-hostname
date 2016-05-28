@@ -4,7 +4,7 @@
 
 name=${1:-$name}
 
-if (cfncluster list | grep $name)
+if (cfncluster list | grep $name &>/dev/null)
 then
     aws ec2 describe-instances --instance-ids \
         $(cfncluster instances $name | awk '/MasterServer/{print $2}') \
