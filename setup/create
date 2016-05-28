@@ -3,6 +3,9 @@
 . common
 
 cfncluster delete $name
-cfncluster create -nr $name
+cfncluster create -nr $name &
+
+sleep 3
 ./cfn-sshconfig
+
 
