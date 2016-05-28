@@ -1,15 +1,19 @@
-#!/bin/bash -x
+#!/bin/bash
 
 . common
 config=${1:-~/.ssh/config}
 
-trap "rm $config.tmp" EXIT
+trap "rm -vf $config.tmp" EXIT
 
-host=$(./cfn-hostname $name)
-[ $? -ne 0 ] && {
+while :
+do
+    host=$(./cfn-hostname $name)
+    [ $? -ne 0 ] && break
     echo "Failed to find the public DNS" >&2
-    exit 1
-}
+    sleep 5
+done
+
+echo "DNS found: $host" >&2
 
 (
     sed "/^# BEGIN $name-cfn/,/^# END $name-cfn/d" < $config
