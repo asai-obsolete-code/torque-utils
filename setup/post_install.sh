@@ -58,7 +58,10 @@ Defaults	env_keep += "PATH EDITOR"
 EOF
 ) &
 
-
+echo lisptmp ; (
+    mkdir /tmp/lisptmp /tmp/newtmp
+    chown -R ubuntu:ubuntu /tmp/lisptmp /tmp/newtmp
+) &
 
 echo home ; (
     cd /home/ubuntu
