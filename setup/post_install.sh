@@ -66,7 +66,7 @@ echo home ; (
         echo 'export PATH=~/.roswell/bin:/opt/torque/contrib:/opt/torque/bin:/opt/torque/sbin:$PATH'
         echo '_byobu_sourced=1 . /usr/bin/byobu-launch'
         echo 'export MAKEFLAGS="-j $(cat /proc/cpuinfo | grep -c processor)"'
-        echo 'PS1="[\u \W]\$'
+        echo 'PS1="[\u \W]\$"'
     ) | write_wasabi_once /home/ubuntu/.profile
     source /home/ubuntu/.profile
     
