@@ -20,27 +20,22 @@ cg1="cg(cost_type=one)"
 lc1="lmcount(lm_rhw(),cost_type=one)"
 bl1="blind(cost_type=one)"
 
-sets="ipc2011-opt"
+sets="aaai16-opt"
 expected_conf="ipc4g"
 
 echo "#!/bin/bash"
 
-# fig2
 for search in eager ; do
     for s in $sets ; do
         for h in lm1 ff1 ce1 ad1 cg1 bl1 gc1 ; do
-            name=${h}${search:0:1} ; root=fig2-base ; {
-		gen -s $s -r $root -n $name $base $plain \
-                    --search cached-fd-clean --heuristic "'h=$(ref $h)'" \
-                    --search "'$search(single(h))'" -
-		echo "run-unsolved $expected_conf $root/$s*-$name-*"
-	    }
-            name=${h}${search:0:1} ; root=fig2-macro ; {
-		gen -s $s -r $root -n $name $base --junk-type :reservoir --junk 2 :infinity \
-                    --search cached-fd-clean --heuristic "'h=$(ref $h)'" \
-                    --search "'$search(single(h))'" -
-		echo "run-unsolved $expected_conf $root/$s*-$name-*"
-	    }
+            for length in 2 5 8 ; do
+                name=${h}${search:0:1} ; root=fig3-$length ; {
+		    gen -s $s -r $root -n $name $base --junk-type :relative-greedy --junk $length 1 \
+                        --search cached-fd-clean --heuristic "'h=$(ref $h)'" \
+                        --search "'$search(single(h))'" -
+		    echo "run-unsolved $expected_conf $root/$s*-$name-*"
+	        }
+            done
         done
     done
 done
