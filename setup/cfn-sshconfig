@@ -5,13 +5,19 @@ config=${1:-~/.ssh/config}
 
 trap "rm $config.tmp" EXIT
 
+host=$(./cfn-hostname $name)
+[ $? -ne 0 ] && {
+    echo "Failed to find the public DNS" >&2
+    exit 1
+}
+
 (
     sed "/^# BEGIN $name-cfn/,/^# END $name-cfn/d" < $config
 
     cat <<EOF
 # BEGIN $name-cfn
 Host $name
-HostName $(./cfn-hostname $name)
+HostName $host
 User $user
 # END $name-cfn
 EOF
