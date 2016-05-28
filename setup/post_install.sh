@@ -52,6 +52,7 @@ EOF
 ) &
 
 echo sudoer ; (
+    sed -i 's/\(.*secure_path.*\)/# \1/g' /etc/sudoers
     write_wasabi_once /etc/sudoers <<EOF
 Defaults	env_keep += "PATH EDITOR"
 EOF
