@@ -70,7 +70,7 @@ echo home ; (
         echo 'PS1="[\u \W]\$"'
     ) | write_wasabi_once /home/ubuntu/.profile
     source /home/ubuntu/.profile
-    
+    export MAKEFLAGS="-j $(cat /proc/cpuinfo | grep -c processor)"
     (
         mkdird repos
         (
