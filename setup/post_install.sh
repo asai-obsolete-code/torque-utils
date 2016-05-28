@@ -71,10 +71,11 @@ echo home ; (
         echo 'PS1="[\u \W]\$ "'
     ) | write_wasabi_once /home/ubuntu/.profile
     source /home/ubuntu/.profile
-    ln -s repos/.home/Dropbox/ repos/.home/.[a-z]*/ .
     export MAKEFLAGS="-j $(cat /proc/cpuinfo | grep -c processor)"
+    ln -s /shared repos
     (
-        mkdird repos
+        ln -s repos/.home/Dropbox/ repos/.home/.[a-z]*/ .
+        cd repos
         (
             git clone https://github.com/guicho271828/torque-utils.git
             cd torque-utils
