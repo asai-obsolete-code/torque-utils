@@ -32,15 +32,6 @@ apt-get install -y libtool libglib2.0-dev mercurial g++ python flex bison g++-mu
 apt-get install -y cgroup-bin libffi-dev                                                         # for CAP
 apt-get install -y htop byobu
 
-echo roswell ; (
-    git clone -b release https://github.com/roswell/roswell.git
-    cd roswell
-    ./bootstrap
-    ./configure
-    make
-    make install
-) &
-
 echo torque ; (
     /opt/torque/sbin/pbs_mom
     /opt/torque/bin/qmgr -c "set server $(hostname) keep_completed=0,auto_node_np=false,allow_node_submit=true"
@@ -88,6 +79,14 @@ echo home ; (
             make mwup-bin &
             make -C sets all &
             wait
+        ) &
+        (
+            git clone -b release https://github.com/roswell/roswell.git
+            cd roswell
+            ./bootstrap
+            ./configure
+            make
+            sudo make install
         ) &
         wait
     ) &
