@@ -33,14 +33,15 @@ apt-get install -y cgroup-bin libffi-dev                                        
 apt-get install -y htop byobu bash-completion
 
 echo torque ; (
-    /opt/torque/sbin/pbs_mom
-    /opt/torque/bin/qmgr -c "set server $(hostname) keep_completed=0,auto_node_np=false,allow_node_submit=true,np_default=18"
-    # /opt/torque/bin/qmgr -c "set queue batch "
+    pgrep pbs_mom || /opt/torque/sbin/pbs_mom
+    pgrep pbs_server && {
+        /opt/torque/bin/qmgr -c "set server $(hostname) keep_completed=0,auto_node_np=false,allow_node_submit=true,np_default=18"
+        # /opt/torque/bin/qmgr -c "set queue batch "
+        while : ; do
+            /opt/torque/bin/qmgr -c "create node localhost np=1,state=offline" && break
+        done
+    }
     chmod +x /opt/torque/contrib/pbstop
-
-    while : ; do
-        /opt/torque/bin/qmgr -c "create node localhost np=1,state=offline" && break
-    done
 ) &
 
 echo profile ; (
