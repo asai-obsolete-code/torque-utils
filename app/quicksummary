@@ -46,7 +46,7 @@ else
                 exit 1
         esac
         # count2=$(find $d -name "*.out" | xargs -n 1 grep "Solution found!" | wc -l)
-        echo -n "$(basename $d | cut -d- -f3) $count"
+        echo -n "$(basename $d | cut -d- -f4) $count"
         #  $count2
         for dd in $d/*
         do
