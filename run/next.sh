@@ -7,8 +7,12 @@ export_vars="nodes ppn mem maxmem time maxtime debug queue jobname_suffix dir co
 next(){
     jobname_suffix=.$time.$mem
     
+    for var in $export_vars
+    do
+        export $var
+    done
     variables=$(
-        for var in $export_vars EOV
+        for var in $export_vars
         do
             eval "echo -n ,$var=\"\$$var\""
         done
