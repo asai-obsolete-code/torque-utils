@@ -8,7 +8,7 @@ trap "rm -vf $config.tmp" EXIT
 while :
 do
     host=$(./cfn-hostname $name)
-    [ $? -ne 0 ] && break
+    [ $? == 0 ] && break
     echo "Failed to find the public DNS" >&2
     sleep 5
 done
