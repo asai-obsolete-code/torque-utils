@@ -7,11 +7,12 @@ export_vars="nodes ppn mem maxmem time maxtime debug queue jobname_suffix dir co
 next(){
     jobname_suffix=.$time.$mem
     
-    for arg in $export_vars
-    do
-        export $arg
-    done
-
+    variables=$(
+        for var in $export_vars EOV
+        do
+            eval "echo -n ,$var=\$$var"
+        done
+    )
     if echodo qsub \
         -l "mem=$mem" \
         -l "walltime=$time" \
@@ -20,7 +21,7 @@ next(){
         -N $(basename $dir | sed 's/[aeiou]//g' | head -c3)$(echo $outname | tail -c +2) \
         -o $dir/$outname$jobname_suffix.out \
         -e $dir/$outname$jobname_suffix.err \
-        -V $WORLD_HOME/run/iterator.sh
+        -v ${variables:1} $WORLD_HOME/run/iterator.sh
     then
         echo "next.sh($$): submitted: with mem=$mem, walltime=$time"
         return 0
