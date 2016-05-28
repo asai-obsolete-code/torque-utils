@@ -73,9 +73,8 @@ echo home ; (
         echo '_byobu_sourced=1 . /usr/bin/byobu-launch'
         echo 'export MAKEFLAGS="-j $(cat /proc/cpuinfo | grep -c processor)"'
         echo 'PS1="[\u \W]\$'
-    ) | write_wasabi_once .profile
-
-    . .profile
+    ) | write_wasabi_once /home/ubuntu/.profile
+    source /home/ubuntu/.profile
     
     (
         mkdird repos
