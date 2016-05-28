@@ -63,6 +63,7 @@ echo lisptmp ; (
 
 echo home ; (
     cd /home/ubuntu
+    su ubuntu
     (
         echo 'export PATH=~/.roswell/bin:/opt/torque/contrib:/opt/torque/bin:/opt/torque/sbin:$PATH'
         echo '_byobu_sourced=1 . /usr/bin/byobu-launch'
@@ -70,6 +71,7 @@ echo home ; (
         echo 'PS1="[\u \W]\$ "'
     ) | write_wasabi_once /home/ubuntu/.profile
     source /home/ubuntu/.profile
+    ln -s repos/.home/Dropbox/ repos/.home/.[a-z]*/ .
     export MAKEFLAGS="-j $(cat /proc/cpuinfo | grep -c processor)"
     (
         mkdird repos
@@ -88,6 +90,7 @@ echo home ; (
             ./configure
             make
             sudo make install
+            ros -Q -e '(ql:quickload :quicklisp-slime-helper)' -q
         ) &
         wait
     ) &
