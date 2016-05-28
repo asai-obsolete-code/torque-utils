@@ -21,7 +21,7 @@ write_wasabi_once (){
     fi
 }
 
-mkdird (){ mkdir $1 ; cd $1 ; }
+mkdird (){ [ ! -d $1 ] && mkdir $1 ; cd $1 ; }
 
 apt-get install -y git
 apt-get install -y emacs24-nox                                  # for everything
