@@ -23,14 +23,7 @@ write_wasabi_once (){
 
 mkdird (){ [ ! -d $1 ] && mkdir $1 ; cd $1 ; }
 
-apt-get install -y git
-apt-get install -y emacs24-nox                                  # for everything
-apt-get install -y libcurses-perl                               # for pbstop
-apt-get install -y build-essential automake make autoconf cmake # for build
-apt-get install -y libcurl4-openssl-dev                         # for roswell
-apt-get install -y libtool libglib2.0-dev mercurial g++ python flex bison g++-multilib # for fd
-apt-get install -y cgroup-bin libffi-dev                                                         # for CAP
-apt-get install -y htop byobu bash-completion
+apt-get install -y git emacs24-nox libcurses-perl build-essential automake make autoconf cmake libcurl4-openssl-dev libtool libglib2.0-dev mercurial g++ python flex bison g++-multilib cgroup-bin libffi-dev htop byobu bash-completion
 
 echo torque ; (
     pgrep pbs_mom || /opt/torque/sbin/pbs_mom
