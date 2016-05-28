@@ -67,7 +67,8 @@ echo home ; (
     export MAKEFLAGS="-j $(cat /proc/cpuinfo | grep -c processor)"
     ln -s /shared repos
     (
-        ln -f -s repos/.home/Dropbox/ repos/.home/.[a-z]*/ .
+        rm -rf .cache
+        ln -s repos/.home/Dropbox/ repos/.home/.[a-z]*/ .
         cd repos
         (
             git clone https://github.com/guicho271828/torque-utils.git
