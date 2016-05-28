@@ -18,12 +18,12 @@ done
 
 echo "DNS found: $host" >&2
 
-while :
-do
-    ping -c 1 $host &>/dev/null && break
-    echo "host is not up: $host" >&2
-    sleep 5
-done
+# while :
+# do
+#     ping -c 1 $host &>/dev/null && break
+#     echo "host is not up: $host" >&2
+#     sleep 5
+# done
 
 (
     sed "/^# BEGIN $name-cfn/,/^# END $name-cfn/d" < $config
