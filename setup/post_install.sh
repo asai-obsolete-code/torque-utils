@@ -61,7 +61,6 @@ EOF
 
 
 echo home ; (
-    su ubuntu
     cd /home/ubuntu
     (
         echo 'export PATH=~/.roswell/bin:/opt/torque/contrib:/opt/torque/bin:/opt/torque/sbin:$PATH'
@@ -105,6 +104,7 @@ echo home ; (
         wait
     ) &
     wait
+    chown -R ubuntu:ubuntu /home/ubuntu
 ) &
 
 wait
