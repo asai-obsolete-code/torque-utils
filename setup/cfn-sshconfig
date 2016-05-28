@@ -1,7 +1,8 @@
 #!/bin/bash
 
 . common
-config=${1:-~/.ssh/config}
+config=$HOME/.ssh/config
+name=${1:-$name}
 
 trap "rm -vf $config.tmp" EXIT
 
