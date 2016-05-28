@@ -6,7 +6,7 @@ name=${1:-$name}
 
 trap "rm -vf $config.tmp" EXIT
 
-trap "exit 1" INT
+trap "exit 1" INT TERM HUP
 
 while :
 do
