@@ -6,15 +6,24 @@ name=${1:-$name}
 
 trap "rm -vf $config.tmp" EXIT
 
+trap "exit 1" INT
+
 while :
 do
     host=$(./cfn-hostname $name)
-    [ $? == 0 ] && break
+    [ $? == 0 ] && [ ! -z $host ] && break
     echo "Failed to find the public DNS" >&2
     sleep 5
 done
 
 echo "DNS found: $host" >&2
+
+while :
+do
+    ping -c 1 $host &>/dev/null && break
+    echo "host is not up: $host" >&2
+    sleep 5
+done
 
 (
     sed "/^# BEGIN $name-cfn/,/^# END $name-cfn/d" < $config
