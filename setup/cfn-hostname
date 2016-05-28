@@ -1,7 +1,16 @@
 #!/bin/bash -x
 
 . common
-aws ec2 describe-instances --instance-ids \
-    $(cfncluster instances $name | awk '{print $2}') \
-    | awk '$1 ~ /PublicDnsName/{print $2; exit}' \
-    | sed 's/[",]//g'
+
+name=${1:-$name}
+
+if (cfncluster list | grep $name)
+then
+    aws ec2 describe-instances --instance-ids \
+        $(cfncluster instances $name | awk '/MasterServer/{print $2}') \
+        | awk '$1 ~ /PublicDnsName/{print $2; exit}' \
+        | sed 's/[",]//g'
+else
+    exit 1
+fi
+
