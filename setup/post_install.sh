@@ -30,12 +30,11 @@ apt-get install -y build-essential automake make autoconf cmake # for build
 apt-get install -y libcurl4-openssl-dev                         # for roswell
 apt-get install -y libtool libglib2.0-dev mercurial g++ python flex bison g++-multilib # for fd
 apt-get install -y cgroup-bin libffi-dev                                                         # for CAP
-apt-get install -y htop byobu
+apt-get install -y htop byobu bash-completion
 
 echo torque ; (
     /opt/torque/sbin/pbs_mom
-    /opt/torque/bin/qmgr -c "set server $(hostname) keep_completed=0,auto_node_np=false,allow_node_submit=true"
-    # np_default=18
+    /opt/torque/bin/qmgr -c "set server $(hostname) keep_completed=0,auto_node_np=false,allow_node_submit=true,np_default=18"
     # /opt/torque/bin/qmgr -c "set queue batch "
     chmod +x /opt/torque/contrib/pbstop
 
