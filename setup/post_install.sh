@@ -28,9 +28,11 @@ apt-get install -y git emacs24-nox libcurses-perl build-essential automake make 
 echo torque ; (
     pgrep pbs_mom || /opt/torque/sbin/pbs_mom
     pgrep pbs_server && {
-        /opt/torque/bin/qmgr -c "set server $(hostname) keep_completed=0,auto_node_np=false,allow_node_submit=true,np_default=18"
+        /opt/torque/bin/qmgr -c "set server $(hostname) keep_completed=0,auto_node_np=false,allow_node_submit=true,np_default=18,use_jobs_subdirs=true"
         # /opt/torque/bin/qmgr -c "set queue batch "
         /opt/torque/bin/qmgr -c "create node $(hostname) np=1,properties=dummy"
+        /opt/torque/bin/qmgr -c "active queue batch"
+        /opt/torque/bin/qmgr -c "active server $(hostname)"
     }
     chmod +x /opt/torque/contrib/pbstop
 ) &
