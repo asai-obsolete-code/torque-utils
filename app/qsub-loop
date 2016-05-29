@@ -19,7 +19,7 @@ message
 
 while :
 do
-    if [ $(qstat -B | grep funlucy | awk '{print $4}') -lt $min ]
+    if [ $(qstat -B | awk '/Active/{print $4}') -lt $min ]
     then
         $(dirname $(readlink -ef $0))/qsub-one-line $nextrun || break
         message
