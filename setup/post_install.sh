@@ -100,7 +100,8 @@ echo home ; (
         ) &
         (
             git clone https://github.com/guicho271828/rcfiles.git
-            make -C rcfiles
+            export HOME
+            HOME=/home/ubuntu make -C rcfiles
         ) &
         wait
     ) &
