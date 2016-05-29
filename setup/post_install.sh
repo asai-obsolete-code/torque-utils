@@ -23,12 +23,16 @@ write_wasabi_once (){
 
 mkdird (){ [ ! -d $1 ] && mkdir $1 ; cd $1 ; }
 
-pgrep pbs_server && {
-    apt-get install -y git emacs24-nox libcurses-perl build-essential automake make autoconf cmake \
-        libtool htop byobu
-}
+master=$(cat /var/spool/torque/server_name)
 
-apt-get install -y libcurl4-openssl-dev libglib2.0-dev g++ python flex bison \
+pgrep pbs_server && apt-get install -y apt-cacher-ng
+
+cat > /etc/apt/apt.conf.d/02proxy <<EOF
+Acquire::http::Proxy "http://$master:3142/";
+EOF
+
+apt-get install -y git emacs24-nox libcurses-perl build-essential automake make autoconf cmake \
+    libtool htop byobu libcurl4-openssl-dev libglib2.0-dev g++ python flex bison \
     g++-multilib libffi-dev bash-completion htop
 
 echo torque ; (
