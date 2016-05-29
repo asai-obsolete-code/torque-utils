@@ -20,7 +20,7 @@ cg1="cg(cost_type=one)"
 lc1="lmcount(lm_rhw(),cost_type=one)"
 bl1="blind(cost_type=one)"
 
-sets="ipc2011-opt"
+sets="ipc2008-opt ipc2014-opt"
 expected_conf="ipc4g"
 
 echo "#!/bin/bash"
