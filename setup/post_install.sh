@@ -63,8 +63,8 @@ echo lisptmp ; (
 ) &
 
 echo home ; (
-    cd /home/ubuntu
     su ubuntu
+    cd /home/ubuntu
     (
         echo 'export PATH=~/.roswell/bin:/opt/torque/contrib:/opt/torque/bin:/opt/torque/sbin:$PATH'
         echo '_byobu_sourced=1 . /usr/bin/byobu-launch'
