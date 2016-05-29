@@ -75,6 +75,7 @@ echo home ; (
         (
             git clone https://github.com/guicho271828/torque-utils.git
             cd torque-utils
+            git pull
             make &
             make mwup-bin &
             make -C sets all &
@@ -83,6 +84,7 @@ echo home ; (
         (
             git clone -b release https://github.com/roswell/roswell.git
             cd roswell
+            git pull
             ./bootstrap
             ./configure
             make
@@ -96,12 +98,16 @@ echo home ; (
         mkdird Dropbox
         (
             git clone https://github.com/guicho271828/site-lisp.git
-            make -C site-lisp
+            cd site-lisp
+            git pull
+            make
         ) &
         (
             git clone https://github.com/guicho271828/rcfiles.git
+            cd rcfiles
+            git pull
             export HOME
-            HOME=/home/ubuntu make -C rcfiles
+            HOME=/home/ubuntu make
         ) &
         wait
     ) &
