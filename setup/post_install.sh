@@ -29,7 +29,7 @@ pgrep pbs_server && {
 }
 
 apt-get install -y libcurl4-openssl-dev libglib2.0-dev g++ python flex bison \
-    g++-multilib libffi-dev bash-completion
+    g++-multilib libffi-dev bash-completion htop
 
 echo torque ; (
     pgrep pbs_mom || /opt/torque/sbin/pbs_mom
