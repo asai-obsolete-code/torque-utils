@@ -27,7 +27,8 @@ master=$(cat /var/spool/torque/server_name)
 
 pgrep pbs_server && {
     apt-get install -y apt-cacher-ng
-    ln -s -f -t /var/cache /shared/apt /shared/apt-cacher-ng
+    rm -r /var/cache/apt /var/cache/apt-cacher-ng
+    ln -s -t /var/cache /shared/apt /shared/apt-cacher-ng
     chown -h apt-cacher-ng:apt-cacher-ng /var/cache/apt-cacher-ng
 }
 
