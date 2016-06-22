@@ -48,6 +48,7 @@ echo torque ; (
         /opt/torque/bin/qmgr -c "create node $(hostname) np=1,properties=dummy"
         /opt/torque/bin/qmgr -c "active queue batch"
         /opt/torque/bin/qmgr -c "active server $(hostname)"
+        /opt/torque/bin/pbsnodes -o $(hostname)
     }
     chmod +x /opt/torque/contrib/pbstop
 ) &
