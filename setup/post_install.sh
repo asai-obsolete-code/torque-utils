@@ -25,7 +25,11 @@ mkdird (){ [ ! -d $1 ] && mkdir $1 ; cd $1 ; }
 
 master=$(cat /var/spool/torque/server_name)
 
-pgrep pbs_server && apt-get install -y apt-cacher-ng
+pgrep pbs_server && {
+    apt-get install -y apt-cacher-ng
+    ln -s -f -t /var/cache /shared/apt /shared/apt-cacher-ng
+    chown -h apt-cacher-ng:apt-cacher-ng /var/cache/apt-cacher-ng
+}
 
 cat > /etc/apt/apt.conf.d/02proxy <<EOF
 Acquire::http::Proxy "http://$master:3142/";
