@@ -1,0 +1,38 @@
+#!/bin/bash
+
+# perform sed to both the name and the contents of a file
+
+if [[ $1 == "!" ]]
+then
+    shift
+    dummy=:
+fi
+
+while :
+do
+    if [[ -z $1 ]] || [[ $1 == - ]]
+    then
+        break
+    fi
+    args="$args $1"
+    shift
+done
+shift
+files=$@
+
+for f in $files
+do
+    newname=$(echo $f | sed $args)
+    if [ -f $f ]
+    then
+        $dummy mkdir -p $(dirname $newname)/
+        $dummy sed -i $args $f
+        $dummy mv $f $newname
+        $dummy rmdir -v -p $(dirname $f) 2> /dev/null
+    elif [ -L $f ]
+    then
+        $dummy mkdir -p $(dirname $newname)/
+        $dummy mv $f $newname
+        $dummy rmdir -v -p $(dirname $f) 2> /dev/null
+    fi
+done
