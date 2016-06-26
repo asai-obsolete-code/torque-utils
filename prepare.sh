@@ -11,36 +11,65 @@ gc="goalcount()"
 cg="cg()"
 lc="lmcount(lm_rhw())"
 
-lm1="lmcut(cost_type=one)"
 ff1="ff(cost_type=one)"
 ad1="add(cost_type=one)"
 ce1="cea(cost_type=one)"
 gc1="goalcount(cost_type=one)"
 cg1="cg(cost_type=one)"
 lc1="lmcount(lm_rhw(),cost_type=one)"
-bl1="blind(cost_type=one)"
 
-sets="ipc2011-opt"
+sets="ipc2008-sat ipc2011-sat ipc2014-sat"
 expected_conf="ipc4g"
-
+root="std"
 echo "#!/bin/bash"
 
-# fig2
-for search in eager ; do
+for search in eager lazy ; do
     for s in $sets ; do
-        for h in lm1 ff1 ce1 ad1 cg1 bl1 gc1 ; do
-            name=${h}${search:0:1} ; root=fig2-base ; {
-		gen -s $s -r $root -n $name $base $plain \
-                    --search cached-fd-clean --heuristic "'h=$(ref $h)'" \
-                    --search "'$search(single(h))'" -
-		echo "run-unsolved $expected_conf $root/$s*-$name-*"
-	    }
-            name=${h}${search:0:1} ; root=fig2-macro ; {
-		gen -s $s -r $root -n $name $base --junk-type :reservoir --junk 2 :infinity \
-                    --search cached-fd-clean --heuristic "'h=$(ref $h)'" \
-                    --search "'$search(single(h))'" -
-		echo "run-unsolved $expected_conf $root/$s*-$name-*"
-	    }
+        for h in ad1 ce1 cg1 ff1 ; do
+            for q in FIFO LIFO RANDOM ; do
+                name=${h}${search:0:1} ; {
+                    gen -s $s -n $name $base $plain --search cached-fd-clean --heuristic "'h=$(ref $h)'" --search \
+                        "'$search(single(h,queue_type=$q))'" -
+                    echo "run-notrun $expected_conf $root/$s*-$name-*"
+                }
+                name=${h}${search:0:1}t ; {
+                    gen -s $s -n $name $base $plain --search cached-fd-clean --heuristic "'h=$(ref $h)'" --search \
+                        "'$search(alt([single(h,queue_type=$q),typed_tiebreaking([],[g(),h],stochastic=false,queue_type=$q)]))'" -
+                    echo "run-notrun $expected_conf $root/$s*-$name-*"
+                }
+                name=${h}${search:0:1}d ; {
+                    gen -s $s -n $name $base $plain --search cached-fd-clean --heuristic "'h=$(ref $h)'" --search \
+                        "'$search(typed_tiebreaking([h],[depth([h])],stochastic=false,queue_type=$q))'" -
+                    echo "run-notrun $expected_conf $root/$s*-$name-*"
+                }
+                name=${h}${search:0:1}td ; {
+                    gen -s $s -n $name $base $plain --search cached-fd-clean --heuristic "'h=$(ref $h)'" --search \
+                        "'$search(alt([single(h,queue_type=$q),typed_tiebreaking([],[g(),h,depth([h])],stochastic=false,queue_type=$q)]))'" -
+                    echo "run-notrun $expected_conf $root/$s*-$name-*"
+                }
+                name=${h}${search:0:1}dt ; {
+                    gen -s $s -n $name $base $plain --search cached-fd-clean --heuristic "'h=$(ref $h)'" --search \
+                        "'$search(alt([typed_tiebreaking([h],[depth([h])],stochastic=false,queue_type=$q),typed_tiebreaking([],[g(),h],stochastic=false,queue_type=$q)]))'" -
+                    echo "run-notrun $expected_conf $root/$s*-$name-*"
+                }
+                name=${h}${search:0:1}dtd ;{
+                    gen -s $s -n $name $base $plain --search cached-fd-clean --heuristic "'h=$(ref $h)'" --search \
+                        "'$search(alt([typed_tiebreaking([h],[depth([h])],stochastic=false,queue_type=$q),typed_tiebreaking([],[g(),h,depth([h])],stochastic=false,queue_type=$q)]))'" -
+                    echo "run-notrun $expected_conf $root/$s*-$name-*"
+                }
+                # z and d is incompatible
+                # z can be combined with t, but z is not meaningful as a type bucket key
+                name=${h}${search:0:1}z ; {
+                    gen -s $s -n $name $base $plain --search cached-fd-clean --heuristic "'z=zobrist()'" --heuristic "'h=$(ref $h)'" --search \
+                        "'$search(tiebreaking([h,z],queue_type=$q))'" -
+                    echo "run-notrun $expected_conf $root/$s*-$name-*"
+                }
+                name=${h}${search:0:1}zt ; {
+                    gen -s $s -n $name $base $plain --search cached-fd-clean --heuristic "'z=zobrist()'" --heuristic "'h=$(ref $h)'" --search \
+                        "'$search(alt([tiebreaking([h,z],queue_type=$q),typed_tiebreaking([],[g(),h],stochastic=false,queue_type=$q)]))'" -
+                    echo "run-notrun $expected_conf $root/$s*-$name-*"
+                }
+            done
         done
     done
 done
