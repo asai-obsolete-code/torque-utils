@@ -5,6 +5,18 @@ do
     out=${f%%qsub}*.out
     if ls $out &>/dev/null
     then
+        if ! (head -n 20 $out | grep "Build date" &>/dev/null)
+        then
+            echo $f
+            echo "reason: lisp image not run" >&2
+            continue
+        fi
+        # if ( grep "Enhancing the problem" $out && ! grep "Solving the enhanced problem" $out ) &>/dev/null
+        # then
+        #     echo $f
+        #     echo "reason: main search is not run under CAP configuration, terminated early" >&2
+        #     continue
+        # fi
         if grep -C 4 "parse error" $out >&2
         then
             echo $f
