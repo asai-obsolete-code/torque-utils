@@ -33,6 +33,7 @@ echo "DNS found: $host" >&2
 Host $name
 HostName $host
 User $user
+IdentityFile ~/Dropbox/private/publickeys/wasabi.enc
 # END $name-cfn
 EOF
 
