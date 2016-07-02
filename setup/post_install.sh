@@ -38,7 +38,7 @@ EOF
 
 apt-get install -y git emacs24-nox libcurses-perl build-essential automake make autoconf cmake \
     libtool htop byobu libcurl4-openssl-dev libglib2.0-dev g++ python flex bison \
-    g++-multilib libffi-dev bash-completion htop sqlite cgroup-bin parallel
+    g++-multilib libffi-dev bash-completion htop sqlite cgroup-bin parallel mosh
 
 echo torque ; (
     pgrep pbs_mom || /opt/torque/sbin/pbs_mom
