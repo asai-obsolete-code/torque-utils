@@ -19,12 +19,15 @@ message
 
 while :
 do
-    if [ $(qstat -B | awk '/Active/{print $4}') -lt $min ]
+    n=$(qstat -B | awk '/Active/{print $4}')
+    if (! [ -z $n ]) && [ $n -lt $min ]
     then
         $(dirname $(readlink -ef $0))/qsub-one-line $nextrun || break
         message
+    else
+        echo sleep 60
+        sleep 60
     fi
-    sleep 60
 done
 
 echo "input line exhausted!"
