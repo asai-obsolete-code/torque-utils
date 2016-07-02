@@ -47,7 +47,12 @@ do
                 echo "reason: read flag off, not copied from the node" >&2
             fi
         fi
-
+        err=${f%%qsub}*.err
+        if ls $err &>/dev/null
+        then
+            echo $f
+            echo "reason: no err file, problematic to the log parser" >&2
+        fi
         
     else
         echo $f
