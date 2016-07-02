@@ -5,26 +5,6 @@ do
     out=${f%%qsub}*.out
     if ls $out &>/dev/null
     then
-        if ( grep "Enhancing the problem" $out && ! grep "Solving the enhanced problem" $out ) &>/dev/null
-        then
-            echo $f
-            echo "reason: main search is not run under CAP configuration, terminated early" >&2
-            continue
-        fi
-        if [ $(stat -c %Y $out) -le $(date -d "2015/08/22 15:00" +%s) ] \
-            && grep "fun007" $out &>/dev/null
-        then
-            echo $f
-            echo "reason: run on fun007 before memory change" >&2
-            continue
-        fi
-        # mkdir=$(grep -c "mkdir: created directory" $out)
-        # if [ $mkdir -lt 4 ]
-        # then
-        #     echo $f
-        #     echo "reason: cgroup dir is not created 4 times: $mkdir" >&2
-        #     continue
-        # fi
         if grep -C 4 "parse error" $out >&2
         then
             echo $f
