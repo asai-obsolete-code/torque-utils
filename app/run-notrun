@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/bin/bash -x
 
 . $WORLD_HOME/template/common.sh
 
@@ -15,13 +15,13 @@ EOF
     exit 1
 fi
 
-run=false
-
-find $@ -path *.qsub | while read qsub ; do
-    if ! ls ${qsub%%qsub}*.out &>/dev/null
-    then
-        dqsub $(ref $resource) $qsub && run=true
-    fi
-done
-
-$run
+find $@ -path *.qsub | (
+    run=false
+    while read qsub ; do
+        if ! ls ${qsub%%qsub}*.out &>/dev/null
+        then
+            dqsub $(ref $resource) $qsub && run=true
+        fi
+    done
+    $run
+)
