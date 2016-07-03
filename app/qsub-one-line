@@ -2,6 +2,11 @@
 
 cmd=$($(dirname $(readlink -ef $0))/first-run-line $1)
 echo $cmd
+if [[ -z "$cmd" ]]
+then
+    exit 1
+fi
+
 eval $cmd
 result=$?
 cp $1 $1.old

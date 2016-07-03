@@ -18,12 +18,9 @@ fi
 run=false
 
 
-find $@ -path *.qsub | (
-    run=false
-    while read qsub ; do
-        dqsub $(ref $resource) $qsub && run=true
-    done
-    $run
-)
+find $@ -path *.qsub | while read qsub ; do
+    dqsub $(ref $resource) $qsub
+done
+
 
 
