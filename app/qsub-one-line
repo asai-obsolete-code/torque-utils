@@ -1,9 +1,11 @@
 #!/bin/bash
 
-echo $($(dirname $(readlink -ef $0))/first-run-line $1)
-eval $($(dirname $(readlink -ef $0))/first-run-line $1)
-
+cmd=$($(dirname $(readlink -ef $0))/first-run-line $1)
+echo $cmd
+eval $cmd
+result=$?
 cp $1 $1.old
 
 comment-first-run-line < $1.old | tee $1
 
+exit $result
