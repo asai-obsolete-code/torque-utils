@@ -40,7 +40,7 @@ do
             fi
         fi
         err=${f%%qsub}*.err
-        if ls $err &>/dev/null
+        if ! ls $err &>/dev/null
         then
             echo $f
             echo "reason: no err file, problematic to the log parser" >&2
