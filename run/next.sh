@@ -17,7 +17,7 @@ next(){
             eval "echo -n ,$var=\"\$$var\""
         done
     )
-    if echodo qsub \
+    if qsub \
         -l "mem=$mem" \
         -l "walltime=$time" \
         -l "nodes=$nodes:ppn=$ppn" \
