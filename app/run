@@ -15,4 +15,10 @@ EOF
     exit 1
 fi
 
-find $@ -path *.qsub | xargs -n 1 dqsub $(ref $resource)
+run=false
+
+find $@ -path *.qsub | while read qsub ; do
+    dqsub $(ref $resource) $qsub || run=true
+done
+
+$run
