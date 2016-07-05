@@ -11,6 +11,12 @@ do
             echo "reason: lisp image not run" >&2
             continue
         fi
+        if head -n 5 $out | grep $(hostname) &>/dev/null
+        then
+            echo $f
+            echo "reason: somehow run on the server" >&2
+            continue
+        fi
         # if ( grep "Enhancing the problem" $out && ! grep "Solving the enhanced problem" $out ) &>/dev/null
         # then
         #     echo $f
