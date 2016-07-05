@@ -1,5 +1,20 @@
 #!/bin/bash
 
+export field=${field:-4}
+export type=${type:-coverage}
+
+while getopts ":f:t" opt
+do
+    case ${opt} in
+        f) field=${OPTARG} ;;
+        t) type=${OPTARG} ;;
+        -) break;;
+        * ) echo "unsupported option $opt" ;;
+    esac
+done
+
+shift $(($OPTIND - 1))
+
 if [ -z $1 ]
 then
     cat >&2 <<EOF
@@ -12,13 +27,6 @@ EOF
     exit 1
 fi
 
-export type=${type:-coverage}
-
-if [[ $1 == -t ]]
-then
-    type=$2
-    shift 2
-fi
     
 if [ -z $COLUMN ]
 then
@@ -46,7 +54,7 @@ else
                 exit 1
         esac
         # count2=$(find $d -name "*.out" | xargs -n 1 grep "Solution found!" | wc -l)
-        echo -n "$(basename $d | cut -d- -f4) $count"
+        echo -n "$(basename $d | cut -d- -f $field) $count"
         #  $count2
         for dd in $d/*
         do
