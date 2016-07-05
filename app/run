@@ -19,7 +19,11 @@ run=false
 
 
 find $@ -path *.qsub | while read qsub ; do
-    dqsub $(ref $resource) $qsub
+    until dqsub $(ref $resource) $qsub
+    do
+        echo "retrying submission: dqsub $(ref $resource) $qsub"
+        sleep 2
+    done
 done
 
 
