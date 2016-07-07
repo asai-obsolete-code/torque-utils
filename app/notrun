@@ -5,13 +5,13 @@ do
     out=${f%%qsub}*.out
     if ls $out &>/dev/null
     then
-        if ! (head -n 20 $out | grep "Build date" &>/dev/null)
+        if ! (grep -qs "Build date" $out)
         then
             echo $f
             echo "reason: lisp image not run" >&2
             continue
         fi
-        if head -n 5 $out | grep $(hostname) &>/dev/null
+        if head -n 5 $out | grep -qs $(hostname)
         then
             echo $f
             echo "reason: somehow run on the server" >&2
@@ -43,6 +43,7 @@ do
             then
                 echo $f
                 echo "reason: read flag off, not copied from the node" >&2
+                continue
             fi
         fi
         err=${f%%qsub}*.err
@@ -50,11 +51,17 @@ do
         then
             echo $f
             echo "reason: no err file, problematic to the log parser" >&2
+            continue
+        elif grep -qs "No space left on device" $err
+        then
+            echo $f
+            echo "reason: no space left on device, failed to write a translation results" >&2
+            continue
         fi
-        
     else
         echo $f
         echo "reason: no log files, job was not run" >&2
+        continue
     fi
 done
 
