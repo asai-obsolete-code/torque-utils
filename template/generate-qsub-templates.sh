@@ -46,7 +46,7 @@ expdir-name (){
     echo -n "$(basename $(git symbolic-ref HEAD))-"
     echo -n "$name-"
     echo -n "$(git --no-pager log -1 --pretty=oneline | head -c6)-"
-    date +"%Y-%m-%d-%H-%M"
+    date +"%Y-%m-%d-%H-%M-%S"
     popd >/dev/null
 }
 
