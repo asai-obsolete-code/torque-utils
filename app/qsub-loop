@@ -33,7 +33,7 @@ do
     else
         echo sleep 60
         sleep 60
-        i=$((i++))
+        ((i++))
     fi
 done
 
