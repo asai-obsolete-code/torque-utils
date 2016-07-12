@@ -32,7 +32,7 @@ if [ -z $COLUMN ]
 then
     COLUMN=true $0 $@ | column -t
 else
-    regex=${*:-"*"}
+    regex=$(ls -d ${*:-"*"} | LC_ALL=C sort -s)
     ptitle=
     title=
     for d in $regex
