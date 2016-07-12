@@ -13,9 +13,14 @@ message (){
     date
     pwd
     echo " Refill when the # of jobs is below $min"
+    echo "Last set of instances finished in $i minutes, $(grep -cv "#" $nextrun) lines remaining"
+    echo "Expected completion time: $(date --date="$(($i*$(grep -cv "#" $nextrun))) min")"
 }
 
+i=0
+
 message
+
 
 while :
 do
@@ -23,10 +28,12 @@ do
     if (! [ -z $n ]) && [ $n -lt $min ]
     then
         $(dirname $(readlink -ef $0))/qsub-one-line $nextrun || break
-        message
+        message $i
+        i=0
     else
         echo sleep 60
         sleep 60
+        i=$((i++))
     fi
 done
 
