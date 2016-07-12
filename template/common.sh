@@ -6,6 +6,7 @@
 gen (){
     # dry $@
     generate-qsub-templates.sh $@ || exit 1
+    echo "run-notrun $expected_conf $root/$s*-$(name)-*"
 }
 
 dry (){

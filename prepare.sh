@@ -18,63 +18,69 @@ gc1="goalcount(cost_type=one)"
 cg1="cg(cost_type=one)"
 lc1="lmcount(lm_rhw(),cost_type=one)"
 
-sets="ipc2008-sat ipc2011-sat ipc2014-sat"
+sets="ipc2011-sat ipc2014-sat"
 expected_conf="ipc4g"
-root="new-bond"
+driver=cached-fd-clean5
 echo "#!/bin/bash"
 
-for search in eager lazy ; do
-    for s in $sets ; do
-        for h in ad1 ce1 cg1 ff1 ; do
-            for q in FIFO LIFO RANDOM ; do
-                # name=$h-$search-$q-h ; {
-                #     : gen -s $s -r $root -n $name $base $plain --search cached-fd-clean5 --heuristic "'h=$(ref $h)'" --search \
-                #         "'$search(single(h,queue_type=$q))'" -
-                #     : echo "run-notrun $expected_conf $root/$s*-$name-*"
-                # }
-                # name=$h-$search-$q-hd ; {
-                #     : gen -s $s -r $root -n $name $base $plain --search cached-fd-clean5 --heuristic "'h=$(ref $h)'" --search \
-                #         "'$search(typed_tiebreaking([h],[depth([h])],stochastic=false,queue_type=$q))'" -
-                #     : echo "run-notrun $expected_conf $root/$s*-$name-*"
-                # }
-                name=$h-$search-$q-hr ; {
-                    gen -s $s -r $root -n $name $base $plain --search cached-fd-clean5 \
-                        --heuristic "'r=random()'" --heuristic "'h=$(ref $h)'" --search \
-                        "'$search(tiebreaking([h,r],queue_type=$q))'" -
-                    echo "run-notrun $expected_conf $root/$s*-$name-*"
-                }
-                # name=$h-$search-$q-hR ; {
-                #     gen -s $s -r $root -n $name $base $plain --search cached-fd-clean5 \
-                #         --heuristic "'r=random(threshold=0.8)'" --heuristic "'h=$(ref $h)'" --search \
-                #         "'$search(tiebreaking([h,r],queue_type=$q))'" -
-                #     echo "run-notrun $expected_conf $root/$s*-$name-*"
-                # }
-                name=$h-$search-$q-hb ; {
-                    gen -s $s -r $root -n $name $base $plain --search cached-fd-clean5 \
-                        --heuristic "'h=$(ref $h)'" --search \
-                        "'$search(tiebreaking([h,random_edge_xor()],queue_type=$q))'" -
-                    echo "run-notrun $expected_conf $root/$s*-$name-*"
-                }
-                # name=$h-$search-$q-hB ; {
-                #     gen -s $s -r $root -n $name $base $plain --search cached-fd-clean5 \
-                #         --heuristic "'h=$(ref $h)'" --search \
-                #         "'$search(tiebreaking([h,random_edge_xor(threshold=0.8)],queue_type=$q))'" -
-                #     echo "run-notrun $expected_conf $root/$s*-$name-*"
-                # }
-                # name=$h-$search-$q-hrd ; {
-                #     gen -s $s -r $root -n $name $base $plain --search cached-fd-clean5 \
-                #         --heuristic "'r=random()'" --heuristic "'h=$(ref $h)'" --search \
-                #         "'$search(typed_tiebreaking([h,r],[depth([h])],stochastic=false,queue_type=$q))'" -
-                #     echo "run-notrun $expected_conf $root/$s*-$name-*"
-                # }
-                # name=$h-$search-$q-hdhr ; {
-                #     gen -s $s -r $root -n $name $base $plain --search cached-fd-clean5 \
-                #         --heuristic "'r=random()'" --heuristic "'h=$(ref $h)'" --search \
-                #         "'$search(alt([tiebreaking([h,r],queue_type=$q),typed_tiebreaking([h],[depth([h])],stochastic=false,queue_type=$q)]))'" -
-                #     echo "run-notrun $expected_conf $root/$s*-$name-*"
-                # }
+name (){
+    echo $h-$search-$q-$root
+}
+
+for i in {1..3} ; do
+    seed=$RANDOM
+    for search in eager lazy ; do
+        for s in $sets ; do
+            for h in ce1 cg1 ff1 ; do
+                for q in RANDOM ; do
+                    root=h; {
+                        gen -s $s -r $root -n $(name) $base $plain --search $driver \
+                            --random-seed $seed \
+                            --heuristic "'h=$(ref $h)'" --search \
+                            "'$search(single(h,queue_type=$q))'" -
+                    }
+                    root=hd; {
+                        gen -s $s -r $root -n $(name) $base $plain --search $driver \
+                            --random-seed $seed \
+                            --heuristic "'h=$(ref $h)'" --search \
+                            "'$search(typed_tiebreaking([h],[depth([h])],stochastic=false,queue_type=$q))'" -
+                    }
+                    root=hr ; {
+                        gen -s $s -r $root -n $(name) $base $plain --search $driver \
+                            --random-seed $seed \
+                            --heuristic "'r=random()'" --heuristic "'h=$(ref $h)'" --search \
+                            "'$search(tiebreaking([h,r],queue_type=$q))'" -
+                    }
+                    root=hR ; {
+                        gen -s $s -r $root -n $(name) $base $plain --search $driver \
+                            --random-seed $seed \
+                            --heuristic "'r=random(threshold=0.8)'" --heuristic "'h=$(ref $h)'" --search \
+                            "'$search(tiebreaking([h,r],queue_type=$q))'" -
+                    }
+                    root=hb ; {
+                        gen -s $s -r $root -n $(name) $base $plain --search $driver \
+                            --random-seed $seed \
+                            --heuristic "'h=$(ref $h)'" --search \
+                            "'$search(tiebreaking([h,random_edge()],queue_type=$q))'" -
+                    }
+                    root=hB ; {
+                        gen -s $s -r $root -n $(name) $base $plain --search $driver \
+                            --random-seed $seed \
+                            --heuristic "'h=$(ref $h)'" --search \
+                            "'$search(tiebreaking([h,random_edge(threshold=0.8)],queue_type=$q))'" -
+                    }
+                    root=hrd ; {
+                        : gen -s $s -r $root -n $(name) $base $plain --search $driver \
+                            --heuristic "'r=random()'" --heuristic "'h=$(ref $h)'" --search \
+                            "'$search(typed_tiebreaking([h,r],[depth([h])],stochastic=false,queue_type=$q))'" -
+                    }
+                    root=hdhr ; {
+                        : gen -s $s -r $root -n $(name) $base $plain --search $driver \
+                            --heuristic "'r=random()'" --heuristic "'h=$(ref $h)'" --search \
+                            "'$search(alt([tiebreaking([h,r],queue_type=$q),typed_tiebreaking([h],[depth([h])],stochastic=false,queue_type=$q)]))'" -
+                    }
+                done
             done
         done
     done
 done
-
