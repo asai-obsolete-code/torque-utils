@@ -40,6 +40,13 @@ apt-get install -y git emacs24-nox libcurses-perl build-essential automake make 
     libtool htop byobu libcurl4-openssl-dev libglib2.0-dev g++ python flex bison \
     g++-multilib libffi-dev bash-completion htop sqlite cgroup-bin parallel mosh
 
+# disable HT cores
+for cpunum in $(
+    cat /sys/devices/system/cpu/cpu*/topology/thread_siblings_list | 
+    cut -s -d, -f2- | tr ',' '\n' | sort -un); do
+        echo 0 > /sys/devices/system/cpu/cpu$cpunum/online
+done
+
 echo torque ; (
     pgrep pbs_mom || /opt/torque/sbin/pbs_mom
     pgrep pbs_server && {
