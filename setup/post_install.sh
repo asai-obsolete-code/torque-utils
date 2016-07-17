@@ -42,6 +42,7 @@ apt-get install -y git emacs24-nox libcurses-perl build-essential automake make 
     linux-tools-generic linux-cloud-tools linux-tools-3.13.0-83-generic linux-cloud-tools-3.13.0-83-generic stress
 
 cpupower frequency-set -g performance
+sudo update-rc.d ondemand disable      # for possible restart
 # echo 'GRUB_CMDLINE_LINUX="intel_idle.max_cstate=1"' >> /etc/default/grub
 # disable HT cores
 for cpunum in $(
