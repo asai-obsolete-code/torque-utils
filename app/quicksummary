@@ -2,11 +2,13 @@
 
 export field=${field:-4}
 export type=${type:-coverage}
+export sortkey=${sortkey:-4}
 
-while getopts ":f:t" opt
+while getopts ":f:t:s:" opt
 do
     case ${opt} in
         f) field=${OPTARG} ;;
+        s) sortkey=${OPTARG} ;;
         t) type=${OPTARG} ;;
         -) break;;
         * ) echo "unsupported option $opt" ;;
@@ -32,7 +34,7 @@ if [ -z $COLUMN ]
 then
     COLUMN=true $0 $@ | column -t
 else
-    regex=$(ls -d ${*:-"*"} | LC_ALL=C sort -s)
+    regex=$(ls -d ${*:-"*"} | LC_ALL=C sort -s -t- $sortkey)
     ptitle=
     title=
     for d in $regex
