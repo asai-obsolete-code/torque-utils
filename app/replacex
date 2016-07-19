@@ -5,7 +5,7 @@
 if [[ $1 == "!" ]]
 then
     shift
-    dummy=:
+    dummy=echo
 fi
 
 while :
@@ -27,12 +27,18 @@ do
     then
         $dummy mkdir -p $(dirname $newname)/
         $dummy sed -i $args $f
-        $dummy mv $f $newname
+        if [[ $f != $newname ]]
+        then
+            $dummy mv $f $newname
+        fi
         $dummy rmdir -v -p $(dirname $f) 2> /dev/null
     elif [ -L $f ]
     then
         $dummy mkdir -p $(dirname $newname)/
-        $dummy mv $f $newname
+        if [[ $f != $newname ]]
+        then
+            $dummy mv $f $newname
+        fi
         $dummy rmdir -v -p $(dirname $f) 2> /dev/null
     fi
 done
