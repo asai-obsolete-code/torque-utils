@@ -2,7 +2,7 @@
 
 export field=${field:-4}
 export type=${type:-coverage}
-export sortkey=${sortkey:-4}
+export sortkey=${sortkey:-"-k 4"}
 
 while getopts ":f:t:s:" opt
 do
@@ -29,6 +29,20 @@ EOF
     exit 1
 fi
 
+cut_discriminating(){
+    local words="$(cat)"
+    local i=3
+    while [ $i -lt 7 ]
+    do
+        if [ $(echo "$words" | cut -c 1-$i | wc -l) -eq $(echo "$words" | cut -c 1-$i | sort | uniq | wc -l) ]
+        then
+            break
+        else
+            ((i++))
+        fi
+    done
+    echo "$words" | cut -c 1-$i
+}
     
 if [ -z $COLUMN ]
 then
@@ -39,7 +53,7 @@ else
     title=
     for d in $regex
     do
-        title="$(basename ${d%%-*}) cov $(echo $d/*/ | xargs -n 1 basename | sed 's/[aeiou]//g' | cut -c1-4 | while read line ; do echo -n " $line "; done )"
+        title=": cov $(echo $d/*/ | xargs -n 1 basename | sed 's/[aeiou]//g' | cut_discriminating | while read line ; do echo -n " $line "; done )"
         if [[ $ptitle != $title ]]
         then
             echo $title
