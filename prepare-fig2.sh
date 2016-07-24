@@ -20,13 +20,13 @@ cg1="cg(cost_type=one)"
 lc1="lmcount(lm_rhw(),cost_type=one)"
 bl1="blind(cost_type=one)"
 
-sets="ipc2008-opt ipc2014-opt"
+sets="ipc2000-opt"
 expected_conf="ipc4g"
 
 echo "#!/bin/bash"
 
 # fig2
-for search in eager ; do
+for search in eager lazy ; do
     for s in $sets ; do
         for h in lm1 ff1 ce1 ad1 cg1 bl1 gc1 ; do
             name=${h}${search:0:1} ; root=fig2-base ; {
@@ -45,3 +45,19 @@ for search in eager ; do
     done
 done
 
+expected_conf="test5_4g"
+
+for s in $sets ; do
+    for h in probe mp ; do
+        name=${h} ; root=fig2-base ; {
+	    gen -s $s -r $root -n $name $base $plain \
+                --search $h-clean -
+	    echo "run-unsolved $expected_conf $root/$s*-$name-*"
+	}
+        name=${h} ; root=fig2-macro ; {
+	    gen -s $s -r $root -n $name $base --junk-type :reservoir --junk 2 :infinity \
+                --search $h-clean -
+	    echo "run-unsolved $expected_conf $root/$s*-$name-*"
+	}
+    done
+done
