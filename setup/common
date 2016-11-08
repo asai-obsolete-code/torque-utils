@@ -2,3 +2,4 @@
 
 name=wasabi
 user=ubuntu
+region=$(awk '/aws_region_name/{print $3}' ~/.cfncluster/config)
