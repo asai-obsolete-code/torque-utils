@@ -116,7 +116,7 @@ echo home ; (
             ./configure
             make
             sudo make install
-            ros -Q -e '(ql:quickload :quicklisp-slime-helper)' -q
+            ros swank install
         ) &
         wait
     ) &
