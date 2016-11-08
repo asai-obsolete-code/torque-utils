@@ -1,6 +1,8 @@
 #!/bin/bash
+dir=$(dirname $(readlink -ef $0))
 
-. common
+. $dir/common
+
 config=$HOME/.ssh/config
 name=${1:-$name}
 
@@ -10,7 +12,7 @@ trap "exit 1" INT TERM HUP
 
 while :
 do
-    host=$(./cfn-hostname $name)
+    host=$($dir/cfn-hostname $name)
     [ $? == 0 ] && [ ! -z $host ] && break
     echo "Failed to find the public DNS" >&2
     sleep 5

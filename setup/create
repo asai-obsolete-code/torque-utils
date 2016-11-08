@@ -1,11 +1,13 @@
 #!/bin/bash -x
 
-. common
+dir=$(dirname $(readlink -ef $0))
+
+. $dir/common
 
 cfncluster delete $name
 cfncluster create -nr $name &
 
 sleep 3
-./cfn-sshconfig
+$dir/cfn-sshconfig
 
 

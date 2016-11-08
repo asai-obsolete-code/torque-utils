@@ -1,6 +1,9 @@
-#!/bin/bash
+#!/bin/bash -x
 
-. common
+dir=$(dirname $(readlink -ef $0))
+
+. $dir/common
+
 
 name=${1:-$name}
 
