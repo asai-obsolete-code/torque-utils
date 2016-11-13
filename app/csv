@@ -1,0 +1,32 @@
+#!/bin/bash
+
+
+usage (){
+    cat >&2 <<EOF
+ Usage: pivotdata [DIRECTORIES...]
+EOF
+    exit 1
+}
+
+# while getopts ":f:t:" opt
+# do
+#     case ${opt} in
+#         f) field=${OPTARG} ;;
+#         t) type=${OPTARG} ;;
+#         -) break;;
+#         * ) echo "unsupported option $opt" ; usage ;;
+#     esac
+# done
+# 
+# shift $(($OPTIND - 1))
+
+[ -z $1 ] && usage 
+    
+regex=$(find ${*:-"*"} -type d -links 2)
+
+for d in $regex
+do
+    count=$(find $d -name "*.plan*" | wc -l)
+    echo "$(echo $d | sed 's_[-/]_,_g'),$count"
+done
+

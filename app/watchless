@@ -1,0 +1,14 @@
+#!/bin/bash
+
+while getopts "d:n:t:f:t:s:" opt
+do
+    case ${opt} in
+        f) field=${OPTARG} ;;
+        s) sortkey=${OPTARG} ;;
+        t) type=${OPTARG} ;;
+        -) break;;
+        * ) echo "unsupported option $opt" ;;
+    esac
+done
+
+
