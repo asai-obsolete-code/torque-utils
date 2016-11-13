@@ -4,6 +4,19 @@ export field=${field:-4}
 export type=${type:-coverage}
 export sortkey=${sortkey:-"-k 4"}
 
+usage (){
+    cat >&2 <<EOF
+ Usage: quicksummary [-t coverage|plan] [-f CUTARG] [-s SORTARG] [DIRECTORIES...]
+
+coverage : count the number of problems solved
+plan     : count the number of plans found (possibly multiple plans per problem)
+
+CUTARG   : how to show the first column, as arguments to cut(8) -k . (fields are separated by - )
+SORTARG  : how to sort the first column, as arguments to sort(8). Example: -s "-k4,5 -k6" (fields are separated by - )
+EOF
+    exit 1
+}
+
 while getopts ":f:t:s:" opt
 do
     case ${opt} in
@@ -11,23 +24,13 @@ do
         s) sortkey=${OPTARG} ;;
         t) type=${OPTARG} ;;
         -) break;;
-        * ) echo "unsupported option $opt" ;;
+        * ) echo "unsupported option $opt" ; usage ;;
     esac
 done
 
 shift $(($OPTIND - 1))
 
-if [ -z $1 ]
-then
-    cat >&2 <<EOF
- Usage: quicksummary [-t coverage|plan] [DIRECTORIES...]
-
-coverage : count the number of problems solved
-plan     : count the number of plans found (possibly multiple plans per problem)
-
-EOF
-    exit 1
-fi
+[ -z $1 ] && usage 
 
 cut_discriminating(){
     local words="$(cat)"
@@ -70,7 +73,7 @@ else
                 exit 1
         esac
         # count2=$(find $d -name "*.out" | xargs -n 1 grep "Solution found!" | wc -l)
-        echo -n "$(basename $d | cut -d- -f $field) $count"
+        echo -n "$(basename $d | sed 's_/_-_g' | cut -d- -f $field) $count"
         #  $count2
         for dd in $d/*
         do
