@@ -1,6 +1,6 @@
 #!/bin/bash
 
-min=${1:-1000}
+min=${1:-10000}
 nextrun=${2:-nextrun}
 
 grep -v " *#" $nextrun
