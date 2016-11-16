@@ -68,54 +68,48 @@ main (){
     #         --heuristic "'h=$(ref $h)'" --search \
     #         "'$search(alt([single(h,queue_type=$q),type_based([pwidth()],queue_type=RANDOM)]))'" -
     # }
-    # root=hd; {
-    #     gen -s $s -r $root -n $(name) $base $plain --search $driver \
-    #         --random-seed $seed \
-    #         --heuristic "'h=$(ref $h)'" --search \
-    #         "'$search(typed_tiebreaking([h],[depth([h])],stochastic=false,queue_type=$q))'" -
-    # }
-    # root=hdt; {
-    #     gen -s $s -r $root -n $(name) $base $plain --search $driver \
-    #         --random-seed $seed \
-    #         --heuristic "'h=$(ref $h)'" --search \
-    #         "'$search(alt([typed_tiebreaking([h],[depth([h])],stochastic=false,queue_type=$q),type_based([h,g()],queue_type=RANDOM)]))'" -
-    # }
-    # root=hdT; {
-    #     gen -s $s -r $root -n $(name) $base $plain --search $driver \
-    #         --random-seed $seed \
-    #         --heuristic "'h=$(ref $h)'" --search \
-    #         "'$search(alt([typed_tiebreaking([h],[depth([h])],stochastic=false,queue_type=$q),type_based([h],queue_type=RANDOM)]))'" -
-    # }
-    # root=hb ; {
-    #     gen -s $s -r $root -n $(name) $base $plain --search $driver \
-    #         --random-seed $seed \
-    #         --heuristic "'h=$(ref $h)'" --search \
-    #         "'$search(tiebreaking([h,random_edge()],queue_type=$q))'" -
-    # }
-    # root=ht ; {
-    #     gen -s $s -r $root -n $(name) $base $plain --search $driver \
-    #         --random-seed $seed \
-    #         --heuristic "'h=$(ref $h)'" --search \
-    #         "'$search(alt([single(h,queue_type=$q),type_based([h,g()],queue_type=RANDOM)]))'" -
-    # }
-    # root=hT ; {
-    #     gen -s $s -r $root -n $(name) $base $plain --search $driver \
-    #         --random-seed $seed \
-    #         --heuristic "'h=$(ref $h)'" --search \
-    #         "'$search(alt([single(h,queue_type=$q),type_based([h],queue_type=RANDOM)]))'" -
-    # }
-    # root=hB ; {
-    #     gen -s $s -r $root -n $(name) $base $plain --search $driver \
-    #         --random-seed $seed \
-    #         --heuristic "'h=$(ref $h)'" --search \
-    #         "'$search(alt([single(h,queue_type=$q),single(random_edge(),queue_type=RANDOM)]))'" -
-    # }
-    # root=hbB ; {
-    #     gen -s $s -r $root -n $(name) $base $plain --search $driver \
-    #         --random-seed $seed \
-    #         --heuristic "'h=$(ref $h)'" --search \
-    #         "'$search(alt([tiebreaking([h,random_edge()],queue_type=$q),single(random_edge(),queue_type=RANDOM)]))'" -
-    # }
+    root=hd; {
+        gen -s $s -r $root -n $(name) $base $plain --search $driver \
+            --random-seed $seed \
+            --heuristic "'h=$(ref $h)'" --search \
+            "'$search(typed_tiebreaking([h],[depth([h])],stochastic=false,queue_type=$q))'" -
+    }
+    root=hdt; {
+        gen -s $s -r $root -n $(name) $base $plain --search $driver \
+            --random-seed $seed \
+            --heuristic "'h=$(ref $h)'" --search \
+            "'$search(alt([typed_tiebreaking([h],[depth([h])],stochastic=false,queue_type=$q),type_based([h,g()],queue_type=RANDOM)]))'" -
+    }
+    root=hdT; {
+        gen -s $s -r $root -n $(name) $base $plain --search $driver \
+            --random-seed $seed \
+            --heuristic "'h=$(ref $h)'" --search \
+            "'$search(alt([typed_tiebreaking([h],[depth([h])],stochastic=false,queue_type=$q),type_based([h],queue_type=RANDOM)]))'" -
+    }
+    root=hb ; {
+        gen -s $s -r $root -n $(name) $base $plain --search $driver \
+            --random-seed $seed \
+            --heuristic "'h=$(ref $h)'" --search \
+            "'$search(tiebreaking([h,random_edge()],queue_type=$q))'" -
+    }
+    root=ht ; {
+        gen -s $s -r $root -n $(name) $base $plain --search $driver \
+            --random-seed $seed \
+            --heuristic "'h=$(ref $h)'" --search \
+            "'$search(alt([single(h,queue_type=$q),type_based([h,g()],queue_type=RANDOM)]))'" -
+    }
+    root=hT ; {
+        gen -s $s -r $root -n $(name) $base $plain --search $driver \
+            --random-seed $seed \
+            --heuristic "'h=$(ref $h)'" --search \
+            "'$search(alt([single(h,queue_type=$q),type_based([h],queue_type=RANDOM)]))'" -
+    }
+    root=hB ; {
+        gen -s $s -r $root -n $(name) $base $plain --search $driver \
+            --random-seed $seed \
+            --heuristic "'h=$(ref $h)'" --search \
+            "'$search(alt([single(h,queue_type=$q),single(random_edge(),queue_type=RANDOM)]))'" -
+    }
     root=hbB ; {
         gen -s $s -r $root -n $(name) $base $plain --search $driver \
             --random-seed $seed \
@@ -129,7 +123,7 @@ first=true
 main2 (){
     seed=$RANDOM
     (
-        for search in eager ; do
+        for search in lazy ; do
             for s in $sets ; do
                 for q in FIFO ; do
                     for h in cg1 ff1 ; do
