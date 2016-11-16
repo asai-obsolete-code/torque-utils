@@ -3,9 +3,11 @@
 min=${1:-10000}
 nextrun=${2:-nextrun}
 
-grep -v " *#" $nextrun
+i=0
+prev=0
+next=0
 
-message (){
+print_refill (){
     echo "-------------------------------------------------------------"
     echo "Remaining experiments in $nextrun:"
     grep -v "#" $nextrun
@@ -13,25 +15,27 @@ message (){
     date
     pwd
     echo " Refill when the # of jobs is below $min"
+}
+
+print_forecast (){
     echo "Last set of instances finished in $i minutes, $(grep -cv "#" $nextrun) lines remaining"
     echo "Expected completion time: $(date --date="$(($i*$(grep -cv "#" $nextrun))) min")"
 }
 
-i=0
-
-message
-
+print_refill
 
 while :
 do
-    n=$(qstat -B | awk '/Active/{print $4}')
-    if (! [ -z $n ]) && [ $n -lt $min ]
+    prev=$now
+    now=$(qstat -B | awk '/Active/{print $4}')
+    if (! [ -z $now ]) && [ $now -lt $min ]
     then
         $(dirname $(readlink -ef $0))/qsub-one-line $nextrun || break
-        message $i
+        print_refill
+        print_forecast
         i=0
     else
-        echo sleep 60
+        echo "$(perl -e "print(($prev-$now)*60)") jobs / 1hr"
         sleep 60
         ((i++))
     fi
