@@ -3,7 +3,7 @@
 
 usage (){
     cat >&2 <<EOF
- Usage: pivotdata [DIRECTORIES...]
+ Usage: csv [DIRECTORIES...]
 EOF
     exit 1
 }
