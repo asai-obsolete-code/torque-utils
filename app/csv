@@ -24,9 +24,12 @@ EOF
     
 regex=$(find ${*:-"*"} -type d -links 2)
 
-for d in $regex
-do
-    count=$(find $d -name "*.plan*" | wc -l)
-    echo "$(echo $d | sed 's_[-/]_,_g'),$count"
-done
+per_dir (){
+    count=$(find $1 -name "*.plan*" | wc -l)
+    echo "$(echo $1 | sed 's_[-/]_,_g'),$count"
+}
 
+export -f per_dir
+export SHELL=/bin/bash
+
+parallel per_dir ::: $regex
