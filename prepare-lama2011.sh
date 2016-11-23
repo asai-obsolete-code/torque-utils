@@ -20,12 +20,12 @@ lc1="lmcount(lm_rhw(),cost_type=one)"
 bl1="blind(cost_type=one)"
 
 sets="ipc2011-sat ipc2014-sat"
-expected_conf="test5_4g"
+expected_conf="test3_4g"
 driver=""
 echo "#!/bin/bash"
 
 name (){
-    echo probe-probe-probe-$root
+    echo lama2011-lama2011-lama2011-$root
 }
 repeat (){
     n=$1
@@ -38,8 +38,8 @@ repeat (){
 }
 
 main (){
-    root=probe; {
-        gen -s $s -r $root -n $(name) $base $plain --search probe-clean -
+    root=lama20113; {
+        gen -s $s -r $root -n $(name) $base $plain --search lama2011-clean -
     }
 }
 

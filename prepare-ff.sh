@@ -25,7 +25,7 @@ driver=""
 echo "#!/bin/bash"
 
 name (){
-    echo probe-probe-probe-$root
+    echo ff-ff-ff-$root
 }
 repeat (){
     n=$1
@@ -38,8 +38,8 @@ repeat (){
 }
 
 main (){
-    root=probe; {
-        gen -s $s -r $root -n $(name) $base $plain --search probe-clean -
+    root=ff; {
+        gen -s $s -r $root -n $(name) $base $plain --search ff-clean -
     }
 }
 
