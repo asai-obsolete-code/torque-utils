@@ -39,7 +39,7 @@ EOF
 apt-get install -y git emacs24-nox libcurses-perl build-essential automake make autoconf cmake \
     libtool htop byobu libcurl4-openssl-dev libglib2.0-dev g++ python flex bison \
     g++-multilib libffi-dev bash-completion htop sqlite cgroup-bin parallel mosh \
-    linux-tools-generic linux-cloud-tools-generic linux-tools-3.13.0-83-generic linux-cloud-tools-3.13.0-83-generic stress
+    linux-tools-generic linux-cloud-tools-generic linux-tools-3.13.0-83-generic linux-cloud-tools-3.13.0-83-generic stress inotify-tools
 
 cpupower frequency-set -g performance
 sudo update-rc.d ondemand disable      # for possible restart
