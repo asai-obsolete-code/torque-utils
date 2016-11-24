@@ -248,20 +248,62 @@ lamacombined2plus (){
 }
 
 lamacombined4plus (){
-    root=lamaBtdb+ ; {
+    root=lamab ; {
         gen -s $s -r $root -n $(name) $base $plain --search $driver \
             --random-seed $seed \
             --heuristic "'hlm1,hff1=lm_ff_syn(lm_rhw(reasonable_orders=true,lm_cost_type=one,cost_type=one))'" \
             --search \
-            "'lazy(alt([$(ld hff1 false $q),$(sp hff1),tiebreaking([hlm1,random_edge()],queue_type=$q),$(sp hlm1),alt([type_based([g(),hff1]),single(random_edge())])]),preferred=[hff1,hlm1],cost_type=one,reopen_closed=false)'" -
+            "'lazy(alt([tiebreaking([hff1,random_edge()],queue_type=$q),$(sp hff1),tiebreaking([hlm1,random_edge()],queue_type=$q),$(sp hlm1)]),preferred=[hff1,hlm1],cost_type=one,reopen_closed=false)'" -
     }
-    root=lamaBtdbdb ; {
+    root=lamad ; {
         gen -s $s -r $root -n $(name) $base $plain --search $driver \
             --random-seed $seed \
             --heuristic "'hlm1,hff1=lm_ff_syn(lm_rhw(reasonable_orders=true,lm_cost_type=one,cost_type=one))'" \
             --search \
-            "'lazy(alt([alt([$(ld hff1 false $q),tiebreaking([hff1,random_edge()],queue_type=$q)]),$(sp hff1),alt([$(ld hlm1 false $q),tiebreaking([hlm1,random_edge()],queue_type=$q)]),$(sp hlm1),alt([type_based([g(),hff1]),single(random_edge())])]),preferred=[hff1,hlm1],cost_type=one,reopen_closed=false)'" -
+            "'lazy(alt([$(ld hff1 false $q),$(sp hff1),$(ld hlm1 false $q),$(sp hlm1)]),preferred=[hff1,hlm1],cost_type=one,reopen_closed=false)'" -
     }
+    root=lamaB ; {
+        gen -s $s -r $root -n $(name) $base $plain --search $driver \
+            --random-seed $seed \
+            --heuristic "'hlm1,hff1=lm_ff_syn(lm_rhw(reasonable_orders=true,lm_cost_type=one,cost_type=one))'" \
+            --search \
+            "'lazy(alt([single(hff1,queue_type=$q),$(sp hff1),single(hlm1,queue_type=$q),$(sp hlm1),single(random_edge())]),preferred=[hff1,hlm1],cost_type=one,reopen_closed=false)'" -
+    }
+    root=lamaD ; {
+        gen -s $s -r $root -n $(name) $base $plain --search $driver \
+            --random-seed $seed \
+            --heuristic "'hlm1,hff1=lm_ff_syn(lm_rhw(reasonable_orders=true,lm_cost_type=one,cost_type=one))'" \
+            --search \
+            "'lazy(alt([single(hff1,queue_type=$q),$(sp hff1),single(hlm1,queue_type=$q),$(sp hlm1),type_based([g(),hff1])]),preferred=[hff1,hlm1],cost_type=one,reopen_closed=false)'" -
+    }
+    root=lamabB ; {
+        gen -s $s -r $root -n $(name) $base $plain --search $driver \
+            --random-seed $seed \
+            --heuristic "'hlm1,hff1=lm_ff_syn(lm_rhw(reasonable_orders=true,lm_cost_type=one,cost_type=one))'" \
+            --search \
+            "'lazy(alt([tiebreaking([hff1,random_edge()],queue_type=$q),$(sp hff1),tiebreaking([hlm1,random_edge()],queue_type=$q),$(sp hlm1),single(random_edge())]),preferred=[hff1,hlm1],cost_type=one,reopen_closed=false)'" -
+    }
+    root=lamadD ; {
+        gen -s $s -r $root -n $(name) $base $plain --search $driver \
+            --random-seed $seed \
+            --heuristic "'hlm1,hff1=lm_ff_syn(lm_rhw(reasonable_orders=true,lm_cost_type=one,cost_type=one))'" \
+            --search \
+            "'lazy(alt([$(ld hff1 false $q),$(sp hff1),$(ld hlm1 false $q),$(sp hlm1),type_based([g(),hff1])]),preferred=[hff1,hlm1],cost_type=one,reopen_closed=false)'" -
+    }
+    # root=lamadbDB ; {
+    #     gen -s $s -r $root -n $(name) $base $plain --search $driver \
+    #         --random-seed $seed \
+    #         --heuristic "'hlm1,hff1=lm_ff_syn(lm_rhw(reasonable_orders=true,lm_cost_type=one,cost_type=one))'" \
+    #         --search \
+    #         "'lazy(alt([$(ld hff1 false $q),$(sp hff1),tiebreaking([hlm1,random_edge()],queue_type=$q),$(sp hlm1),alt([type_based([g(),hff1]),single(random_edge())])]),preferred=[hff1,hlm1],cost_type=one,reopen_closed=false)'" -
+    # }
+    # root=lamadbdbDB ; {
+    #     gen -s $s -r $root -n $(name) $base $plain --search $driver \
+    #         --random-seed $seed \
+    #         --heuristic "'hlm1,hff1=lm_ff_syn(lm_rhw(reasonable_orders=true,lm_cost_type=one,cost_type=one))'" \
+    #         --search \
+    #         "'lazy(alt([alt([$(ld hff1 false $q),tiebreaking([hff1,random_edge()],queue_type=$q)]),$(sp hff1),alt([$(ld hlm1 false $q),tiebreaking([hlm1,random_edge()],queue_type=$q)]),$(sp hlm1),alt([type_based([g(),hff1]),single(random_edge())])]),preferred=[hff1,hlm1],cost_type=one,reopen_closed=false)'" -
+    # }
 }
 
 
@@ -281,6 +323,6 @@ main2 (){
     first=false
 }
 
-for i in {1..6} ; do
+for i in {1..10} ; do
     main2
 done

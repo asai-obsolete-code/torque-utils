@@ -21,7 +21,7 @@ bl1="blind(cost_type=one)"
 
 sets="ipc2011-sat ipc2014-sat"
 expected_conf="ipc4g"
-driver=cached-fd-clean
+driver=cached-fd-clean3
 echo "#!/bin/bash"
 
 name (){
@@ -38,23 +38,53 @@ repeat (){
 }
 
 main (){
-    root=h; {
+    # root=h; {
+    #     gen -s $s -r $root -n $(name) $base $plain --search $driver \
+    #         --random-seed $seed \
+    #         --heuristic "'h=$(ref $h)'" --search \
+    #         "'$search(single(h,queue_type=$q),f_eval=depth([h],true))'" -
+    # }
+    # root=hd; {
+    #     gen -s $s -r $root -n $(name) $base $plain --search $driver \
+    #         --random-seed $seed \
+    #         --heuristic "'h=$(ref $h)'" --search \
+    #         "'$search(typed_tiebreaking([h],[depth([h])],stochastic=false,queue_type=$q),f_eval=depth([h],true))'" -
+    # }
+    # root=hb ; {
+    #     gen -s $s -r $root -n $(name) $base $plain --search $driver \
+    #         --random-seed $seed \
+    #         --heuristic "'h=$(ref $h)'" --search \
+    #         "'$search(tiebreaking([h,random_edge()],queue_type=$q),f_eval=depth([h],true))'" -
+    # }
+    # root=hs ; {
+    #     gen -s $s -r $root -n $(name) $base $plain --search $driver \
+    #         --random-seed $seed \
+    #         --heuristic "'h=$(ref $h)'" --search \
+    #         "'$search(tiebreaking([h,random()],queue_type=$q),f_eval=depth([h],true))'" -
+    # }
+    # root=hD ; {
+    #     gen -s $s -r $root -n $(name) $base $plain --search $driver \
+    #         --random-seed $seed \
+    #         --heuristic "'h=$(ref $h)'" --search \
+    #         "'$search(alt([single(h,queue_type=$q),type_based([h,g()],queue_type=RANDOM)]),f_eval=depth([const(value=1)],true))'" -
+    # }
+    # root=hB ; {
+    #     gen -s $s -r $root -n $(name) $base $plain --search $driver \
+    #         --random-seed $seed \
+    #         --heuristic "'h=$(ref $h)'" --search \
+    #         "'$search(alt([single(h,queue_type=$q),single(random_edge(),queue_type=RANDOM)]),f_eval=depth([const(value=1)],true))'" -
+    # }
+    # root=hS ; {
+    #     gen -s $s -r $root -n $(name) $base $plain --search $driver \
+    #         --random-seed $seed \
+    #         --heuristic "'h=$(ref $h)'" --search \
+    #         "'$search(alt([single(h,queue_type=$q),single(random(),queue_type=RANDOM)]),f_eval=depth([const(value=1)],true))'" -
+    # }
+    root=hdb; {
         gen -s $s -r $root -n $(name) $base $plain --search $driver \
             --random-seed $seed \
             --heuristic "'h=$(ref $h)'" --search \
-            "'$search(single(h,queue_type=$q),f_eval=depth([h],true))'" -
-    }
-    root=hd; {
-        gen -s $s -r $root -n $(name) $base $plain --search $driver \
-            --random-seed $seed \
-            --heuristic "'h=$(ref $h)'" --search \
-            "'$search(typed_tiebreaking([h],[depth([h])],stochastic=false,queue_type=$q),f_eval=depth([h],true))'" -
-    }
-    root=hb ; {
-        gen -s $s -r $root -n $(name) $base $plain --search $driver \
-            --random-seed $seed \
-            --heuristic "'h=$(ref $h)'" --search \
-            "'$search(tiebreaking([h,random_edge()],queue_type=$q),f_eval=depth([h],true))'" -
+            "'$search(alt([typed_tiebreaking([h],[depth([h])],stochastic=false,queue_type=$q),tiebreaking([h,random_edge()],queue_type=$q)]),f_eval=depth([h],true))'" -
     }
 }
 
