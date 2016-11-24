@@ -116,6 +116,12 @@ main (){
             --heuristic "'h=$(ref $h)'" --search \
             "'$search(alt([tiebreaking([h,random_edge()],queue_type=$q),single(random_edge(),queue_type=RANDOM)]))'" -
     }
+    # root=hdbDB ; {
+    #     gen -s $s -r $root -n $(name) $base $plain --search $driver \
+    #         --random-seed $seed \
+    #         --heuristic "'h=$(ref $h)'" --search \
+    #         "'$search(alt([alt([tiebreaking([h,random_edge()],queue_type=$q),typed_tiebreaking([h],[depth([h])],stochastic=false,queue_type=$q)]),alt([single(random_edge(),queue_type=RANDOM),type_based([h,g()],queue_type=RANDOM)])]))'" -
+    # }
 }
 
 first=true
