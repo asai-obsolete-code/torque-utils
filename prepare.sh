@@ -22,6 +22,7 @@ bl1="blind(cost_type=one)"
 sets="ipc2011-sat ipc2014-sat"
 expected_conf="ipc4g"
 driver=cached-fd-clean5
+runner=run-notrun
 echo "#!/bin/bash"
 
 name (){
@@ -38,18 +39,25 @@ repeat (){
 }
 
 main (){
-    # root=h; {
-    #     gen -s $s -r $root -n $(name) $base $plain --search $driver \
-    #         --random-seed $seed \
-    #         --heuristic "'h=$(ref $h)'" --search \
-    #         "'$search(single(h,queue_type=$q))'" -
-    # }
-    root=hd; {
+    root=h; {
         gen -s $s -r $root -n $(name) $base $plain --search $driver \
             --random-seed $seed \
             --heuristic "'h=$(ref $h)'" --search \
-            "'$search(typed_tiebreaking([h],[depth([h])],stochastic=false,queue_type=$q))'" -
+            "'$search(single(h,queue_type=$q))'" -
     }
+    root=hf ; {
+        gen -s $s -r $root -n $(name) $base $plain --search $driver \
+            --random-seed $seed \
+            --heuristic "'h=$(ref $h)'" --search \
+            "'$search(fractal([h],queue_type=$q))'" -
+        echo "$runner $expected_conf $root/$s-*"
+    }
+    # root=hd; {
+    #     gen -s $s -r $root -n $(name) $base $plain --search $driver \
+    #         --random-seed $seed \
+    #         --heuristic "'h=$(ref $h)'" --search \
+    #         "'$search(typed_tiebreaking([h],[depth([h])],stochastic=false,queue_type=$q))'" -
+    # }
     # root=hdt; {
     #     gen -s $s -r $root -n $(name) $base $plain --search $driver \
     #         --random-seed $seed \
@@ -62,12 +70,12 @@ main (){
     #         --heuristic "'h=$(ref $h)'" --search \
     #         "'$search(alt([typed_tiebreaking([h],[depth([h])],stochastic=false,queue_type=$q),type_based([h],queue_type=RANDOM)]))'" -
     # }
-    root=hb ; {
-        gen -s $s -r $root -n $(name) $base $plain --search $driver \
-            --random-seed $seed \
-            --heuristic "'h=$(ref $h)'" --search \
-            "'$search(tiebreaking([h,random_edge()],queue_type=$q))'" -
-    }
+    # root=hb ; {
+    #     gen -s $s -r $root -n $(name) $base $plain --search $driver \
+    #         --random-seed $seed \
+    #         --heuristic "'h=$(ref $h)'" --search \
+    #         "'$search(tiebreaking([h,random_edge()],queue_type=$q))'" -
+    # }
     # root=ht ; {
     #     gen -s $s -r $root -n $(name) $base $plain --search $driver \
     #         --random-seed $seed \
@@ -118,6 +126,6 @@ main2 (){
     first=false
 }
 
-for i in {1..6} ; do
+for i in 1 ; do
     main2
 done
